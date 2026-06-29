@@ -1,0 +1,765 @@
+{
+  "proyecto": "Plataforma de Atención al Cliente con Chat y Tickets",
+  "epicas": [
+    {
+      "id": "EPIC-01",
+      "nombre": "Gestión de Tickets de Soporte",
+      "descripcion": "Permitir la creación, consulta, seguimiento, asignación y cierre de tickets de soporte por parte de clientes y agentes",
+      "historias": [
+        {
+          "id": "HU-03",
+          "titulo": "Como cliente, quiero crear un ticket de soporte para reportar un problema",
+          "storyPoints": 8,
+          "prioridad": "Alta",
+          "sprint": 1,
+          "criteriosAceptacion": [
+            "Formulario con campos: asunto (150 chars máx), descripción (10 chars mín), categoría, prioridad",
+            "Validación de campos obligatorios",
+            "Generación de número único: TKT-2026-####",
+            "Guardado en MongoDB con estado 'Abierto'",
+            "Mensaje de éxito y redirección a detalle",
+            "Tiempo de respuesta máximo: 3 segundos"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-03-T1",
+              "titulo": "Diseñar interfaz HTML del formulario de creación de tickets",
+              "descripcion": "Crear formulario con 4 campos (asunto, descripción, categoría, prioridad) + botón. HTML5 + CSS3 básico",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-03-T2",
+              "titulo": "Implementar validaciones JavaScript del formulario",
+              "descripcion": "Programar validaciones de campos obligatorios, longitud (asunto ≤150 chars, descripción ≥10 chars), formato de datos",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-03-T3",
+              "titulo": "Crear endpoint API POST /api/tickets",
+              "descripcion": "Desarrollar controller que reciba datos, valide en backend, genere número único TKT-2026-#### y retorne JSON",
+              "estimacionHoras": 8,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-03-T4",
+              "titulo": "Crear colección y modelo de tickets en MongoDB",
+              "descripcion": "Definir schema con Mongoose incluyendo 8 campos: numero_ticket, asunto, descripcion, categoria, prioridad, estado, fecha_creacion, cliente_id",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend/BD"
+            },
+            {
+              "id": "HU-03-T5",
+              "titulo": "Integrar frontend con backend para creación de tickets",
+              "descripcion": "Conectar formulario HTML con API POST usando fetch/axios, manejar respuesta y mostrar mensajes",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Full Stack"
+            },
+            {
+              "id": "HU-03-T6",
+              "titulo": "Pruebas de funcionamiento de creación de tickets",
+              "descripcion": "Probar 3 casos: ticket válido, ticket sin campos obligatorios, ticket con datos inválidos. Verificar guardado en MongoDB",
+              "estimacionHoras": 4,
+              "responsable": "QA / Todo el equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-04",
+          "titulo": "Como cliente, quiero consultar la lista de mis tickets para ver el estado de mis solicitudes",
+          "storyPoints": 5,
+          "prioridad": "Alta",
+          "sprint": 1,
+          "criteriosAceptacion": [
+            "Tabla/lista con tickets del cliente (número, asunto, estado, prioridad, fecha)",
+            "Ordenamiento por fecha (más reciente primero)",
+            "Click en ticket para ver detalle",
+            "Mensaje 'No tienes tickets creados' si está vacío",
+            "Tiempo de carga máximo: 2 segundos"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-04-T1",
+              "titulo": "Diseñar interfaz de lista de tickets en HTML/CSS",
+              "descripcion": "Crear tabla HTML con 5 columnas (número, asunto, estado, prioridad, fecha) + estilos CSS responsive",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-04-T2",
+              "titulo": "Crear endpoint API GET /api/tickets/mis-tickets/:clienteId",
+              "descripcion": "Desarrollar controller que consulte tickets de un cliente, ordene por fecha descendente y retorne JSON",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-04-T3",
+              "titulo": "Integrar frontend con API para mostrar lista de tickets",
+              "descripcion": "Usar fetch/axios para obtener datos, renderizar dinámicamente en tabla, manejar lista vacía",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-04-T4",
+              "titulo": "Agregar enlaces a detalle + mejorar UX de la lista",
+              "descripcion": "Hacer filas clickeables + agregar indicadores visuales (hover, cursor pointer) + iconos de estado + paginación básica",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-04-T5",
+              "titulo": "Pruebas de consulta de tickets",
+              "descripcion": "Probar con cliente con 5 tickets, cliente sin tickets, verificar ordenamiento y datos mostrados",
+              "estimacionHoras": 4,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-05",
+          "titulo": "Como usuario, quiero consultar el detalle de un ticket para ver toda la información del caso",
+          "storyPoints": 3,
+          "prioridad": "Media",
+          "sprint": 1,
+          "criteriosAceptacion": [
+            "Mostrar: número, asunto, descripción completa, categoría, prioridad, estado, fechas, cliente, agente asignado",
+            "Mostrar historial de cambios (fecha, usuario, acción, campo cambiado)",
+            "Botón 'Volver a la lista'",
+            "Tiempo de carga máximo: 2 segundos"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-05-T1",
+              "titulo": "Diseñar interfaz de detalle de ticket con secciones",
+              "descripcion": "Crear layout con 3 secciones: información general (grid 2 columnas), descripción completa, historial de cambios (timeline)",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-05-T2",
+              "titulo": "Crear endpoint API GET /api/tickets/:id",
+              "descripcion": "Desarrollar controller que consulte ticket por ID, incluya información del cliente, agente e historial de cambios",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-05-T3",
+              "titulo": "Integrar frontend con API para mostrar detalle completo",
+              "descripcion": "Obtener ID desde URL, hacer fetch a GET /api/tickets/:id, renderizar datos en las 3 secciones",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-05-T4",
+              "titulo": "Implementar botón 'Volver' y manejo de errores",
+              "descripcion": "Agregar botón que redirija a /mis-tickets, manejar caso 'ticket no encontrado' (404), mostrar mensaje de error",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-05-T5",
+              "titulo": "Pruebas de detalle de ticket",
+              "descripcion": "Probar ticket existente con historial, ticket no encontrado (404), verificar todos los campos mostrados",
+              "estimacionHoras": 4,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-07",
+          "titulo": "Como agente, quiero cambiar el estado de un ticket para reflejar el avance en la atención",
+          "storyPoints": 3,
+          "prioridad": "Alta",
+          "sprint": 2,
+          "criteriosAceptacion": [
+            "Dropdown con estados: Abierto, En proceso, Resuelto, Cerrado",
+            "Actualización en tiempo real del estado",
+            "Registro automático en historial de cambios",
+            "Validación de permisos (solo agentes)",
+            "Notificación al cliente del cambio de estado"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-07-T1",
+              "titulo": "Diseñar dropdown de estados",
+              "descripcion": "Crear componente select con 4 estados posibles + estilos visuales",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-07-T2",
+              "titulo": "Crear endpoint PATCH /api/tickets/:id/estado",
+              "descripcion": "Desarrollar controller que actualice estado del ticket y valide permisos de agente",
+              "estimacionHoras": 5,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-07-T3",
+              "titulo": "Registrar cambio en historial",
+              "descripcion": "Automatizar registro en colección historial_tickets cuando cambie el estado",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-07-T4",
+              "titulo": "Actualizar UI en tiempo real",
+              "descripcion": "Reflejar cambio de estado inmediatamente sin recargar página",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-07-T5",
+              "titulo": "Validar permisos de agente",
+              "descripcion": "Middleware que verifique rol de agente antes de permitir cambio",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-07-T6",
+              "titulo": "Pruebas de cambio de estado",
+              "descripcion": "Probar todos los flujos de cambio de estado y validaciones",
+              "estimacionHoras": 3,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-09",
+          "titulo": "Como usuario, quiero filtrar los tickets por estado, prioridad o categoría para encontrar rápidamente la información",
+          "storyPoints": 5,
+          "prioridad": "Media",
+          "sprint": 4,
+          "criteriosAceptacion": [
+            "Filtros por: estado, prioridad, categoría, fecha",
+            "Múltiples filtros aplicables simultáneamente",
+            "Ordenamiento por diferentes campos",
+            "Resultados actualizados en tiempo real",
+            "Contador de resultados encontrados"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-09-T1",
+              "titulo": "Diseñar filtros (checkboxes, selects)",
+              "descripcion": "Crear interfaz con filtros desplegables y checkboxes para múltiples criterios",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-09-T2",
+              "titulo": "Crear endpoint GET /api/tickets con query params",
+              "descripcion": "Desarrollar controller que acepte parámetros de filtro y retorne resultados filtrados",
+              "estimacionHoras": 8,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-09-T3",
+              "titulo": "Implementar búsqueda en frontend",
+              "descripcion": "Conectar filtros con API, actualizar lista dinámicamente al aplicar filtros",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-09-T4",
+              "titulo": "Agregar ordenamiento",
+              "descripcion": "Permitir ordenar por fecha, prioridad, estado con botones clickeables",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-09-T5",
+              "titulo": "Pruebas con múltiples filtros",
+              "descripcion": "Probar combinaciones de filtros y validar resultados correctos",
+              "estimacionHoras": 4,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-10",
+          "titulo": "Como agente o cliente, quiero cerrar un ticket cuando el problema haya sido resuelto satisfactoriamente",
+          "storyPoints": 3,
+          "prioridad": "Media",
+          "sprint": 4,
+          "criteriosAceptacion": [
+            "Botón 'Cerrar ticket' visible solo para tickets resueltos",
+            "Confirmación antes de cerrar",
+            "Registro de fecha y hora de cierre",
+            "Imposibilidad de reabrir sin justificación",
+            "Notificación de cierre al cliente"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-10-T1",
+              "titulo": "Diseñar botón de cerrar ticket",
+              "descripcion": "Crear botón visible solo cuando estado es 'Resuelto' + modal de confirmación",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-10-T2",
+              "titulo": "Crear endpoint PATCH /api/tickets/:id/cerrar",
+              "descripcion": "Desarrollar controller que cambie estado a 'Cerrado' y registre fecha",
+              "estimacionHoras": 5,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-10-T3",
+              "titulo": "Validar que esté resuelto",
+              "descripcion": "Verificar que el ticket tenga estado 'Resuelto' antes de permitir cierre",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-10-T4",
+              "titulo": "Registrar fecha de cierre",
+              "descripcion": "Actualizar campo fecha_cierre en MongoDB y registrar en historial",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-10-T5",
+              "titulo": "Encuesta de satisfacción (opcional)",
+              "descripcion": "Mostrar formulario de satisfacción al cerrar ticket",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-10-T6",
+              "titulo": "Pruebas de cierre de ticket",
+              "descripcion": "Probar flujo completo de cierre y validaciones",
+              "estimacionHoras": 3,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EPIC-02",
+      "nombre": "Sistema de Comunicación y Chat",
+      "descripcion": "Facilitar la comunicación entre clientes y agentes de soporte mediante un sistema de chat integrado a los tickets",
+      "historias": [
+        {
+          "id": "HU-06",
+          "titulo": "Como agente, quiero responder un ticket para brindar solución al problema reportado por el cliente",
+          "storyPoints": 5,
+          "prioridad": "Alta",
+          "sprint": 2,
+          "criteriosAceptacion": [
+            "Formulario de respuesta con editor de texto",
+            "Adjuntar archivos (imágenes, documentos)",
+            "Notificación por email al cliente",
+            "Registro de respuesta en historial del ticket",
+            "Cambio automático de estado a 'En proceso'"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-06-T1",
+              "titulo": "Diseñar formulario de respuesta",
+              "descripcion": "Crear interfaz con textarea, botón de adjuntar archivo y botón enviar",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-06-T2",
+              "titulo": "Crear endpoint POST /api/tickets/:id/respuestas",
+              "descripcion": "Desarrollar controller que guarde respuesta y actualice ticket",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-06-T3",
+              "titulo": "Crear colección 'mensajes' en MongoDB",
+              "descripcion": "Definir schema para mensajes con campos: ticket_id, usuario_id, contenido, tipo, archivo, fecha",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend/BD"
+            },
+            {
+              "id": "HU-06-T4",
+              "titulo": "Integrar frontend-backend",
+              "descripcion": "Conectar formulario con API, manejar subida de archivos",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Full Stack"
+            },
+            {
+              "id": "HU-06-T5",
+              "titulo": "Notificación por email al cliente",
+              "descripcion": "Implementar envío de email cuando el agente responda",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-06-T6",
+              "titulo": "Pruebas de respuesta a tickets",
+              "descripcion": "Probar flujo completo de respuesta con y sin archivos adjuntos",
+              "estimacionHoras": 4,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-11",
+          "titulo": "Como usuario (cliente o agente), quiero comunicarme mediante un chat en tiempo real dentro del ticket para agilizar la atención",
+          "storyPoints": 8,
+          "prioridad": "Alta",
+          "sprint": 3,
+          "criteriosAceptacion": [
+            "Interfaz de chat tipo mensajería instantánea",
+            "Mensajes en tiempo real con WebSocket",
+            "Indicador de 'escribiendo...'",
+            "Marcador de mensajes leídos/no leídos",
+            "Historial de chat persistente",
+            "Soporte para enviar archivos e imágenes"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-11-T1",
+              "titulo": "Diseñar interfaz de chat",
+              "descripcion": "Crear layout de chat con burbujas de mensajes, input de texto y botón enviar",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-11-T2",
+              "titulo": "Implementar WebSocket con Socket.io",
+              "descripcion": "Configurar servidor WebSocket para comunicación en tiempo real entre cliente y agente",
+              "estimacionHoras": 10,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-11-T3",
+              "titulo": "Crear endpoint para historial de chat",
+              "descripcion": "GET /api/tickets/:id/chat que retorne todos los mensajes del ticket",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-11-T4",
+              "titulo": "Guardar mensajes en MongoDB",
+              "descripcion": "Persistir mensajes de chat en colección con referencia al ticket",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend/BD"
+            },
+            {
+              "id": "HU-11-T5",
+              "titulo": "Indicador de 'escribiendo...'",
+              "descripcion": "Mostrar indicador cuando el otro usuario esté escribiendo un mensaje",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-11-T6",
+              "titulo": "Marcar mensajes como leídos",
+              "descripcion": "Implementar lógica para marcar mensajes como leídos cuando se visualicen",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Full Stack"
+            },
+            {
+              "id": "HU-11-T7",
+              "titulo": "Pruebas de chat en tiempo real",
+              "descripcion": "Probar comunicación bidireccional, pérdida de conexión, reconexión",
+              "estimacionHoras": 6,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-12",
+          "titulo": "Como usuario, quiero consultar el historial de atención de un ticket para revisar toda la conversación y cambios realizados",
+          "storyPoints": 5,
+          "prioridad": "Media",
+          "sprint": 2,
+          "criteriosAceptacion": [
+            "Timeline cronológico de eventos",
+            "Mensajes del chat visibles",
+            "Cambios de estado registrados",
+            "Asignaciones de agentes mostradas",
+            "Filtros por tipo de evento (mensaje, cambio de estado, asignación)",
+            "Búsqueda dentro del historial"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-12-T1",
+              "titulo": "Diseñar vista de timeline de historial",
+              "descripcion": "Crear interfaz tipo línea de tiempo con eventos ordenados cronológicamente",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-12-T2",
+              "titulo": "Crear endpoint GET /api/tickets/:id/historial",
+              "descripcion": "Desarrollar controller que combine mensajes y cambios de estado ordenados por fecha",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-12-T3",
+              "titulo": "Consultar cambios y mensajes",
+              "descripcion": "Query que una colección mensajes e historial_tickets ordenados por fecha",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend/BD"
+            },
+            {
+              "id": "HU-12-T4",
+              "titulo": "Ordenar cronológicamente",
+              "descripcion": "Implementar ordenamiento descendente/ascendente en frontend",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-12-T5",
+              "titulo": "Filtrar por tipo de evento",
+              "descripcion": "Agregar filtros para mostrar solo mensajes, solo cambios de estado, o todos",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-12-T6",
+              "titulo": "Pruebas de historial",
+              "descripcion": "Verificar que todos los eventos aparezcan en orden correcto",
+              "estimacionHoras": 4,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EPIC-03",
+      "nombre": "Administración y Asignación",
+      "descripcion": "Optimizar la gestión interna del equipo de soporte mediante herramientas de asignación y distribución de carga",
+      "historias": [
+        {
+          "id": "HU-08",
+          "titulo": "Como administrador, quiero asignar un ticket a un agente específico para distribuir la carga de trabajo",
+          "storyPoints": 5,
+          "prioridad": "Alta",
+          "sprint": 4,
+          "criteriosAceptacion": [
+            "Lista de agentes disponibles con carga de trabajo",
+            "Selección de agente mediante dropdown o modal",
+            "Notificación automática al agente asignado",
+            "Registro de asignación en historial",
+            "Visualización de tickets asignados por agente",
+            "Posibilidad de reasignar ticket"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-08-T1",
+              "titulo": "Diseñar modal de asignación",
+              "descripcion": "Crear interfaz modal con lista de agentes disponibles y botón asignar",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-08-T2",
+              "titulo": "Crear endpoint POST /api/tickets/:id/asignar",
+              "descripcion": "Desarrollar controller que asigne ticket a agente y actualice campo agente_id",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-08-T3",
+              "titulo": "Listar agentes disponibles",
+              "descripcion": "GET /api/agentes que retorne lista de agentes con su carga actual de tickets",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-08-T4",
+              "titulo": "Notificar al agente asignado",
+              "descripcion": "Enviar email o notificación al agente cuando se le asigne un ticket",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-08-T5",
+              "titulo": "Registrar en historial",
+              "descripcion": "Automatizar registro de asignación en historial_tickets con usuario que asignó",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-08-T6",
+              "titulo": "Pruebas de asignación",
+              "descripcion": "Probar asignación, reasignación y notificaciones",
+              "estimacionHoras": 4,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "EPIC-04",
+      "nombre": "Gestión de Usuarios y Autenticación",
+      "descripcion": "Permitir que los usuarios (clientes, agentes y administradores) puedan registrarse, iniciar sesión y gestionar su perfil de manera segura",
+      "historias": [
+        {
+          "id": "HU-01",
+          "titulo": "Como cliente, quiero registrarme en la plataforma para poder crear tickets y recibir soporte",
+          "storyPoints": 5,
+          "prioridad": "Media",
+          "sprint": 3,
+          "criteriosAceptacion": [
+            "Formulario con campos: nombre, email, contraseña, teléfono",
+            "Validar que el email tenga formato válido",
+            "Validar que la contraseña tenga mínimo 8 caracteres",
+            "Validar que todos los campos obligatorios estén completos",
+            "Verificar que el email no esté registrado previamente",
+            "Encriptar la contraseña antes de guardar en la base de datos",
+            "Mostrar mensaje de éxito: 'Registro exitoso, bienvenido'",
+            "Redirigir al login después del registro",
+            "Enviar correo de confirmación (opcional para Sprint 1)"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-01-T1",
+              "titulo": "Diseñar formulario HTML de registro",
+              "descripcion": "Crear interfaz con campos: nombre (texto), email (email), contraseña (password), teléfono (tel), botón registrar",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-01-T2",
+              "titulo": "Implementar validaciones JavaScript del formulario",
+              "descripcion": "Programar validaciones: email válido (regex), contraseña mínimo 8 caracteres, campos obligatorios, confirmación de contraseña",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-01-T3",
+              "titulo": "Crear endpoint POST /api/usuarios/registro",
+              "descripcion": "Desarrollar ruta que valide datos, encripte contraseña con bcrypt, verifique email único y guarde en MongoDB",
+              "estimacionHoras": 8,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-01-T4",
+              "titulo": "Encriptar contraseña con bcrypt",
+              "descripcion": "Implementar hash de contraseña con bcrypt (salt rounds: 10) antes de guardar",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-01-T5",
+              "titulo": "Crear colección usuarios en MongoDB",
+              "descripcion": "Definir schema con Mongoose: nombre, email (unique), password, telefono, rol (default: cliente), estado, fecha_registro",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend/BD"
+            },
+            {
+              "id": "HU-01-T6",
+              "titulo": "Email de confirmación",
+              "descripcion": "Enviar email de bienvenida con NodeMailer o servicio similar (opcional)",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-01-T7",
+              "titulo": "Pruebas de registro",
+              "descripcion": "Probar registro exitoso, email duplicado, datos inválidos, validaciones",
+              "estimacionHoras": 4,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        },
+        {
+          "id": "HU-02",
+          "titulo": "Como usuario registrado, quiero iniciar sesión en el sistema para acceder a mis funcionalidades según mi rol",
+          "storyPoints": 3,
+          "prioridad": "Media",
+          "sprint": 3,
+          "criteriosAceptacion": [
+            "Formulario de login con email y contraseña",
+            "Validar credenciales contra base de datos",
+            "Generar token JWT válido",
+            "Redirigir según rol (cliente, agente, admin)",
+            "Mantener sesión activa con token",
+            "Mensaje de error claro para credenciales inválidas",
+            "Opción 'Recordarme' (opcional)"
+          ],
+          "subtareas": [
+            {
+              "id": "HU-02-T1",
+              "titulo": "Diseñar formulario de login",
+              "descripcion": "Crear interfaz con campos email, contraseña, botón ingresar y link a registro",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-02-T2",
+              "titulo": "Endpoint POST /api/auth/login",
+              "descripcion": "Desarrollar controller que busque usuario por email y valide contraseña",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-02-T3",
+              "titulo": "Generar JWT token",
+              "descripcion": "Implementar generación de JSON Web Token con información de usuario y rol",
+              "estimacionHoras": 5,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-02-T4",
+              "titulo": "Middleware de autenticación",
+              "descripcion": "Crear middleware que verifique token JWT en rutas protegidas",
+              "estimacionHoras": 6,
+              "responsable": "Desarrollador Backend"
+            },
+            {
+              "id": "HU-02-T5",
+              "titulo": "Guardar token en localStorage",
+              "descripcion": "Almacenar token en navegador y enviarlo en headers de peticiones",
+              "estimacionHoras": 3,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-02-T6",
+              "titulo": "Proteger rutas",
+              "descripcion": "Implementar redirección a login si no hay token válido en rutas protegidas",
+              "estimacionHoras": 4,
+              "responsable": "Desarrollador Frontend"
+            },
+            {
+              "id": "HU-02-T7",
+              "titulo": "Pruebas de autenticación",
+              "descripcion": "Probar login exitoso, credenciales inválidas, token expirado, diferentes roles",
+              "estimacionHoras": 3,
+              "responsable": "QA / Equipo"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resumen": {
+    "totalEpicas": 4,
+    "totalHistorias": 12,
+    "totalStoryPoints": 53,
+    "distribucionPorSprint": {
+      "sprint1": {
+        "historias": ["HU-03", "HU-04", "HU-05"],
+        "storyPoints": 16,
+        "goal": "El cliente puede crear tickets y consultarlos"
+      },
+      "sprint2": {
+        "historias": ["HU-06", "HU-07", "HU-12"],
+        "storyPoints": 13,
+        "goal": "Comunicación con el cliente y actualización de tickets"
+      },
+      "sprint3": {
+        "historias": ["HU-01", "HU-02", "HU-11"],
+        "storyPoints": 16,
+        "goal": "Autenticación y chat en tiempo real"
+      },
+      "sprint4": {
+        "historias": ["HU-08", "HU-09", "HU-10"],
+        "storyPoints": 13,
+        "goal": "Administración, filtrado y cierre de tickets"
+      }
+    }
+  }
+}
