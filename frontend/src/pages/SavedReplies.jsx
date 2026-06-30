@@ -23,14 +23,14 @@ const SavedReplies = () => {
   });
 
   const categories = [
-    { value: 'all', label: 'All Categories' },
+    { value: 'all', label: 'Todas las categorias' },
     { value: 'general', label: 'General' },
-    { value: 'technical', label: 'Technical' },
-    { value: 'billing', label: 'Billing' },
-    { value: 'greeting', label: 'Greeting' },
-    { value: 'closing', label: 'Closing' },
-    { value: 'escalation', label: 'Escalation' },
-    { value: 'other', label: 'Other' }
+    { value: 'technical', label: 'Tecnica' },
+    { value: 'billing', label: 'Facturacion' },
+    { value: 'greeting', label: 'Saludo' },
+    { value: 'closing', label: 'Cierre' },
+    { value: 'escalation', label: 'Escalamiento' },
+    { value: 'other', label: 'Otra' }
   ];
 
   useEffect(() => {
@@ -94,12 +94,12 @@ const SavedReplies = () => {
       fetchSavedReplies();
     } catch (error) {
       console.error('Error saving reply:', error);
-      alert(error.response?.data?.message || 'Error saving reply');
+      alert(error.response?.data?.message || 'Error al guardar la respuesta');
     }
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this saved reply?')) return;
+    if (!confirm('Estas seguro de que quieres eliminar esta respuesta guardada?')) return;
 
     try {
       const token = localStorage.getItem('token');
@@ -109,19 +109,20 @@ const SavedReplies = () => {
       fetchSavedReplies();
     } catch (error) {
       console.error('Error deleting reply:', error);
-      alert('Error deleting reply');
+      alert('Error al eliminar la respuesta');
     }
   };
 
   const handleCopy = async (reply) => {
     try {
-      await navigator.clipboard.writeText(reply.content);
+      await navigator.clipboard.writeText(reply.content);
+
       const token = localStorage.getItem('token');
       await axios.post(`${API_URL}/saved-replies/${reply._id}/usage`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      alert('Reply copied to clipboard!');
+      alert('Respuesta copiada al portapapeles');
       fetchSavedReplies(); // Refresh to update usage count
     } catch (error) {
       console.error('Error copying reply:', error);
@@ -163,15 +164,15 @@ const SavedReplies = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
+    return <div className="flex justify-center items-center h-64">Cargando...</div>;
   }
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Saved Replies</h1>
-          <p className="text-gray-600 mt-1">Manage your quick response templates</p>
+          <h1 className="text-2xl font-bold text-gray-900">Respuestas guardadas</h1>
+          <p className="text-gray-600 mt-1">Gestiona tus plantillas de respuesta rapida</p>
         </div>
         <button
           onClick={() => {
@@ -181,7 +182,7 @@ const SavedReplies = () => {
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus size={20} />
-          New Reply
+          Nueva respuesta
         </button>
       </div>
 
@@ -192,7 +193,7 @@ const SavedReplies = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
             <input
               type="text"
-              placeholder="Search replies..."
+              placeholder="Buscar respuestas..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -241,7 +242,7 @@ const SavedReplies = () => {
             <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
               <div className="flex items-center gap-1">
                 <TrendingUp size={14} />
-                <span>Used {reply.usageCount} times</span>
+                <span>Usada {reply.usageCount} veces</span>
               </div>
               {reply.department && (
                 <span className="text-blue-600">{reply.department.name}</span>
@@ -254,7 +255,7 @@ const SavedReplies = () => {
                 className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 text-sm"
               >
                 <Copy size={16} />
-                Copy
+                Copiar
               </button>
               <button
                 onClick={() => handleEdit(reply)}
@@ -275,7 +276,7 @@ const SavedReplies = () => {
 
       {filteredReplies.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No saved replies found. Create your first one!</p>
+          <p className="text-gray-500">No se encontraron respuestas guardadas. Crea la primera!</p>
         </div>
       )}
 
@@ -285,14 +286,14 @@ const SavedReplies = () => {
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h2 className="text-xl font-bold mb-4">
-                {editingReply ? 'Edit Saved Reply' : 'Create Saved Reply'}
+                {editingReply ? 'Editar respuesta guardada' : 'Crear respuesta guardada'}
               </h2>
 
               <form onSubmit={handleSubmit}>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Title *
+                      Titulo *
                     </label>
                     <input
                       type="text"
@@ -300,13 +301,13 @@ const SavedReplies = () => {
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="e.g., Welcome Message"
+                      placeholder="ej., Mensaje de bienvenida"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Content *
+                      Contenido *
                     </label>
                     <textarea
                       required
@@ -314,31 +315,31 @@ const SavedReplies = () => {
                       onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                       rows={6}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Enter your reply template..."
+                      placeholder="Ingresa tu plantilla de respuesta..."
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Tip: Use variables like {'{customer_name}'}, {'{ticket_id}'}, {'{agent_name}'}
+                      Consejo: Usa variables como {'{customer_name}'}, {'{ticket_id}'}, {'{agent_name}'}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Shortcut (optional)
+                        Atajo (opcional)
                       </label>
                       <input
                         type="text"
                         value={formData.shortcut}
                         onChange={(e) => setFormData({ ...formData, shortcut: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="e.g., welcome"
+                        placeholder="ej., bienvenida"
                       />
-                      <p className="text-xs text-gray-500 mt-1">Type /shortcut to use</p>
+                      <p className="text-xs text-gray-500 mt-1">Escribe /atajo para usarlo</p>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Category
+                        Categoria
                       </label>
                       <select
                         value={formData.category}
@@ -355,23 +356,23 @@ const SavedReplies = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Visibility
+                        Visibilidad
                       </label>
                       <select
                         value={formData.visibility}
                         onChange={(e) => setFormData({ ...formData, visibility: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="private">Private (Only Me)</option>
-                        <option value="department">Department</option>
-                        <option value="global">Global (All Users)</option>
+                        <option value="private">Privada (solo yo)</option>
+                        <option value="department">Departamento</option>
+                        <option value="global">Global (todos los usuarios)</option>
                       </select>
                     </div>
 
                     {formData.visibility === 'department' && (
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Department
+                          Departamento
                         </label>
                         <select
                           value={formData.department}
@@ -379,7 +380,7 @@ const SavedReplies = () => {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           required={formData.visibility === 'department'}
                         >
-                          <option value="">Select Department</option>
+                          <option value="">Selecciona un departamento</option>
                           {departments.map(dept => (
                             <option key={dept._id} value={dept._id}>{dept.name}</option>
                           ))}
@@ -394,7 +395,7 @@ const SavedReplies = () => {
                     type="submit"
                     className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                   >
-                    {editingReply ? 'Update' : 'Create'}
+                    {editingReply ? 'Actualizar' : 'Crear'}
                   </button>
                   <button
                     type="button"
@@ -404,7 +405,7 @@ const SavedReplies = () => {
                     }}
                     className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
               </form>

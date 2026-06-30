@@ -22,7 +22,8 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const { data } = await api.get('/tickets?limit=5');
-      setRecentTickets(data.data);
+      setRecentTickets(data.data);
+
       const total = data.pagination.total;
       const open = data.data.filter(t => t.status?.includeInActive).length;
       const mine = data.data.filter(t =>
@@ -46,7 +47,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px] text-lg text-muted-foreground">
-        Loading dashboard...
+      Cargando panel...
       </div>
     );
   }
@@ -69,7 +70,7 @@ const Dashboard = () => {
           to="/tickets/new"
           className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 hover:-translate-y-0.5 transition-all shadow-sm"
         >
-          Create Ticket
+          Crear solicitud
         </Link>
       </div>
 
@@ -79,7 +80,7 @@ const Dashboard = () => {
             <Ticket size={24} />
           </div>
           <div>
-            <h3 className="text-sm text-muted-foreground mb-2">Total Tickets</h3>
+            <h3 className="text-sm text-muted-foreground mb-2">Total de solicitudes</h3>
             <p className="text-3xl font-bold text-foreground">{stats.totalTickets}</p>
           </div>
         </div>
@@ -89,7 +90,7 @@ const Dashboard = () => {
             <FolderOpen size={24} />
           </div>
           <div>
-            <h3 className="text-sm text-muted-foreground mb-2">Open Tickets</h3>
+            <h3 className="text-sm text-muted-foreground mb-2">Solicitudes abiertas</h3>
             <p className="text-3xl font-bold text-foreground">{stats.openTickets}</p>
           </div>
         </div>
@@ -99,7 +100,7 @@ const Dashboard = () => {
             <Users size={24} />
           </div>
           <div>
-            <h3 className="text-sm text-muted-foreground mb-2">My Tickets</h3>
+            <h3 className="text-sm text-muted-foreground mb-2">Mis solicitudes</h3>
             <p className="text-3xl font-bold text-foreground">{stats.myTickets}</p>
           </div>
         </div>
@@ -109,14 +110,14 @@ const Dashboard = () => {
             <TrendingUp size={24} />
           </div>
           <div>
-            <h3 className="text-sm text-muted-foreground mb-2">Escalated</h3>
+            <h3 className="text-sm text-muted-foreground mb-2">Escaladas</h3>
             <p className="text-3xl font-bold text-foreground">{stats.escalatedTickets}</p>
           </div>
         </div>
       </div>
 
       <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-        <h2 className="text-xl font-bold text-foreground mb-4">Recent Tickets</h2>
+        <h2 className="text-xl font-bold text-foreground mb-4">Solicitudes recientes</h2>
         <div className="flex flex-col gap-4">
           {recentTickets.map((ticket) => (
             <Link

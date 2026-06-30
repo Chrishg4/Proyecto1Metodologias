@@ -84,7 +84,8 @@ const SavedReplyPicker = ({ onSelect, ticketData }) => {
   const handleSelectReply = async (reply) => {
     try {
       const processedContent = replaceVariables(reply.content);
-      onSelect(processedContent);
+      onSelect(processedContent);
+
       const token = localStorage.getItem('token');
       await axios.post(`${API_URL}/saved-replies/${reply._id}/usage`, {}, {
         headers: { Authorization: `Bearer ${token}` }
@@ -116,10 +117,10 @@ const SavedReplyPicker = ({ onSelect, ticketData }) => {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-        title="Insert saved reply"
+        title="Insertar respuesta guardada"
       >
         <MessageSquare size={16} />
-        Saved Replies
+        Respuestas guardadas
       </button>
 
       {isOpen && (
@@ -130,7 +131,7 @@ const SavedReplyPicker = ({ onSelect, ticketData }) => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
               <input
                 type="text"
-                placeholder="Search saved replies..."
+                placeholder="Buscar respuestas guardadas..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-9 pr-8 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -150,10 +151,10 @@ const SavedReplyPicker = ({ onSelect, ticketData }) => {
           {}
           <div className="overflow-y-auto flex-1">
             {loading ? (
-              <div className="p-4 text-center text-gray-500">Loading...</div>
+              <div className="p-4 text-center text-gray-500">Cargando...</div>
             ) : filteredReplies.length === 0 ? (
               <div className="p-4 text-center text-gray-500">
-                {searchTerm ? 'No replies found' : 'No saved replies yet'}
+                {searchTerm ? 'No se encontraron respuestas' : 'Aun no hay respuestas guardadas'}
               </div>
             ) : (
               <div className="divide-y divide-gray-100">
@@ -179,7 +180,7 @@ const SavedReplyPicker = ({ onSelect, ticketData }) => {
                     <p className="text-xs text-gray-600 line-clamp-2">{reply.content}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-xs text-gray-400">
-                        Used {reply.usageCount} times
+                        Usada {reply.usageCount} veces
                       </span>
                       {reply.visibility !== 'private' && (
                         <span className="text-xs text-blue-500">
@@ -196,7 +197,7 @@ const SavedReplyPicker = ({ onSelect, ticketData }) => {
           {}
           <div className="p-2 border-t border-gray-200 bg-gray-50">
             <p className="text-xs text-gray-500 text-center">
-              Tip: Variables like {'{customer_name}'} will be replaced automatically
+              Consejo: Las variables como {'{customer_name}'} se reemplazaran automaticamente
             </p>
           </div>
         </div>

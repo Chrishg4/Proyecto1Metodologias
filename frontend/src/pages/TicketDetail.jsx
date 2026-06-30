@@ -70,7 +70,7 @@ const TicketDetail = () => {
       });
     } catch (error) {
       console.error('Failed to fetch ticket:', error);
-      toast.error('Failed to load ticket');
+      toast.error('No se pudo cargar la solicitud');
       navigate('/tickets');
     } finally {
       setLoading(false);
@@ -111,7 +111,7 @@ const TicketDetail = () => {
   const handleFilesUploaded = (newAttachments) => {
     setAttachments([...newAttachments, ...attachments]);
     setShowFileUpload(false);
-    toast.success('Files uploaded successfully');
+    toast.success('Archivos cargados correctamente');
   };
 
   const fetchHistory = async () => {
@@ -121,7 +121,7 @@ const TicketDetail = () => {
       setShowHistory(true);
     } catch (error) {
       console.error('Failed to fetch ticket history:', error);
-      toast.error('Failed to load ticket history');
+      toast.error('No se pudo cargar el historial de la solicitud');
     }
   };
 
@@ -136,53 +136,53 @@ const TicketDetail = () => {
 
   const handleMerge = async () => {
     if (!mergeTargetId) {
-      toast.error('Please select a target ticket');
+      toast.error('Selecciona una solicitud destino');
       return;
     }
 
     try {
       await ticketService.mergeTickets(id, mergeTargetId);
-      toast.success('Tickets merged successfully');
+      toast.success('Solicitudes combinadas correctamente');
       setShowMergeModal(false);
       navigate(`/tickets/${mergeTargetId}`);
     } catch (error) {
       console.error('Failed to merge tickets:', error);
-      toast.error(error.response?.data?.message || 'Failed to merge tickets');
+      toast.error(error.response?.data?.message || 'No se pudieron combinar las solicitudes');
     }
   };
 
   const handleAddDependency = async () => {
     if (!dependencyData.ticketId) {
-      toast.error('Please select a ticket');
+      toast.error('Selecciona una solicitud');
       return;
     }
 
     try {
       await ticketService.addDependency(id, dependencyData.ticketId, dependencyData.type);
-      toast.success('Dependency added successfully');
+      toast.success('Dependencia agregada correctamente');
       setShowDependencyModal(false);
       fetchTicket();
     } catch (error) {
       console.error('Failed to add dependency:', error);
-      toast.error(error.response?.data?.message || 'Failed to add dependency');
+      toast.error(error.response?.data?.message || 'No se pudo agregar la dependencia');
     }
   };
 
   const handleRemoveDependency = async (dependentTicketId) => {
     try {
       await ticketService.removeDependency(id, dependentTicketId);
-      toast.success('Dependency removed successfully');
+      toast.success('Dependencia eliminada correctamente');
       fetchTicket();
     } catch (error) {
       console.error('Failed to remove dependency:', error);
-      toast.error('Failed to remove dependency');
+      toast.error('No se pudo eliminar la dependencia');
     }
   };
 
   const handleReplySubmit = async (e) => {
     e.preventDefault();
     if (!replyMessage.trim()) {
-      toast.error('Reply message cannot be empty');
+      toast.error('El mensaje de respuesta no puede estar vacio');
       return;
     }
 
@@ -192,7 +192,7 @@ const TicketDetail = () => {
       setReplies([...replies, response.data]);
       setReplyMessage('');
       setIsInternal(false);
-      toast.success('Reply added successfully');
+      toast.success('Respuesta agregada correctamente');
     } catch (error) {
       console.error('Failed to add reply:', error);
       toast.error(error.response?.data?.message || 'Failed to add reply');
@@ -205,10 +205,10 @@ const TicketDetail = () => {
     try {
       const response = await ticketService.changeStatus(id, statusId);
       setTicket(response.data);
-      toast.success('Status updated successfully');
+      toast.success('Estado actualizado correctamente');
     } catch (error) {
       console.error('Failed to change status:', error);
-      toast.error('Failed to update status');
+      toast.error('No se pudo actualizar el estado');
     }
   };
 
@@ -216,7 +216,7 @@ const TicketDetail = () => {
     try {
       const response = await ticketService.assignTicket(id, assignedTo || null);
       setTicket(response.data);
-      toast.success('Ticket assigned successfully');
+      toast.success('Solicitud asignada correctamente');
     } catch (error) {
       toast.error('Failed to assign ticket');
     }
@@ -249,12 +249,12 @@ const TicketDetail = () => {
       const surveyToken = response.data.token;
       const link = `${window.location.origin}/survey/${surveyToken}`;
       setSurveyLink(link);
-      toast.success('Survey created successfully!');
+      toast.success('Encuesta creada correctamente');
     } catch (error) {
       if (error.response?.status === 400 && error.response?.data?.message?.includes('already exists')) {
-        toast.error('Survey already exists for this ticket');
+        toast.error('Ya existe una encuesta para esta solicitud');
       } else {
-        toast.error(error.response?.data?.message || 'Failed to create survey');
+        toast.error(error.response?.data?.message || 'No se pudo crear la encuesta');
       }
     }
   };
@@ -267,7 +267,7 @@ const TicketDetail = () => {
       });
       setTicket(response.data);
       setEditMode(false);
-      toast.success('Ticket updated successfully');
+      toast.success('Solicitud actualizada correctamente');
     } catch (error) {
       console.error('Failed to update ticket:', error);
       toast.error(error.response?.data?.message || 'Failed to update ticket');
@@ -287,7 +287,7 @@ const TicketDetail = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px] text-lg text-muted-foreground">
-        Loading ticket...
+        Cargando solicitud...
       </div>
     );
   }
@@ -305,7 +305,7 @@ const TicketDetail = () => {
         className="flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
       >
         <ArrowLeft size={20} />
-        Back to Tickets
+        Volver a solicitudes
       </button>
 
       {isLocked && lockedBy && user?.role !== 'user' && (
@@ -316,17 +316,17 @@ const TicketDetail = () => {
             </div>
             <div className="ml-3 flex-1">
               <h3 className="text-sm font-medium text-yellow-800">
-                Ticket Currently Being Viewed
+                Solicitud siendo vista actualmente
               </h3>
               <div className="mt-2 text-sm text-yellow-700">
                 <p>
                   <strong>{lockedBy.name}</strong> ({lockedBy.email}) is currently viewing this ticket.
-                  Your changes may conflict with theirs.
+                  Tus cambios pueden entrar en conflicto con los suyos.
                 </p>
               </div>
               <div className="mt-3 flex items-center gap-2 text-xs text-yellow-600">
                 <Eye size={14} />
-                <span>They will be notified when you start editing</span>
+                <span>Se les notificara cuando empieces a editar</span>
               </div>
             </div>
           </div>
@@ -337,7 +337,7 @@ const TicketDetail = () => {
         <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 rounded-r-lg">
           <div className="flex items-center">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-3"></div>
-            <p className="text-sm text-blue-700">Checking ticket availability...</p>
+            <p className="text-sm text-blue-700">Verificando disponibilidad de la solicitud...</p>
           </div>
         </div>
       )}
@@ -383,17 +383,17 @@ const TicketDetail = () => {
                   onChange={(e) => setEditData({ ...editData, priority: e.target.value })}
                   className="px-3 py-2 border-2 border-border rounded bg-background text-foreground"
                 >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                  <option value="Critical">Critical</option>
+                    <option value="Low">Baja</option>
+                    <option value="Medium">Media</option>
+                    <option value="High">Alta</option>
+                    <option value="Critical">Critica</option>
                 </select>
                 <div className="flex gap-2">
                   <button
                     onClick={handleUpdateTicket}
                     className="px-4 py-2 bg-primary text-primary-foreground rounded font-semibold hover:opacity-90"
                   >
-                    Save Changes
+                    Guardar cambios
                   </button>
                   <button
                     onClick={() => {
@@ -406,7 +406,7 @@ const TicketDetail = () => {
                     }}
                     className="px-4 py-2 bg-muted text-foreground rounded font-semibold hover:bg-muted/80"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
               </div>
@@ -446,13 +446,13 @@ const TicketDetail = () => {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
                 <Paperclip size={20} />
-                Attachments ({attachments.length})
+                Archivos adjuntos ({attachments.length})
               </h2>
               <button
                 onClick={() => setShowFileUpload(!showFileUpload)}
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90 text-sm"
               >
-                {showFileUpload ? 'Cancel' : 'Add Files'}
+                {showFileUpload ? 'Cancelar' : 'Agregar archivos'}
               </button>
             </div>
 
@@ -480,7 +480,7 @@ const TicketDetail = () => {
                 className="flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
               >
                 <History size={20} />
-                {showHistory ? 'Hide Activity History' : 'Show Activity History'}
+                {showHistory ? 'Ocultar historial de actividad' : 'Mostrar historial de actividad'}
               </button>
 
               {showHistory && history.length > 0 && (
@@ -491,8 +491,8 @@ const TicketDetail = () => {
                         <span className="font-semibold">{item.user?.name || 'System'}</span>{' '}
                         {item.action}
                         {item.field && ` ${item.field}`}
-                        {item.oldValue && ` from "${item.oldValue}"`}
-                        {item.newValue && ` to "${item.newValue}"`}
+                        {item.oldValue && ` de "${item.oldValue}"`}
+                        {item.newValue && ` a "${item.newValue}"`}
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
                         {new Date(item.timestamp).toLocaleString()}
@@ -506,11 +506,11 @@ const TicketDetail = () => {
 
           {}
           <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-            <h2 className="text-xl font-bold text-foreground mb-4">Replies</h2>
+            <h2 className="text-xl font-bold text-foreground mb-4">Respuestas</h2>
 
             <div className="space-y-4 mb-6">
               {replies.length === 0 ? (
-                <p className="text-muted-foreground text-center py-8">No replies yet</p>
+                <p className="text-muted-foreground text-center py-8">Aun no hay respuestas</p>
               ) : (
                 replies.map((reply) => (
                   <div
@@ -529,7 +529,7 @@ const TicketDetail = () => {
                         </span>
                         {reply.isInternal && (
                           <span className="text-xs px-2 py-0.5 bg-amber-200 text-amber-800 dark:bg-amber-900 dark:text-amber-200 rounded">
-                            Internal
+                            Interna
                           </span>
                         )}
                       </div>
@@ -553,7 +553,7 @@ const TicketDetail = () => {
                 className={`w-full px-4 py-3 border-2 border-border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground resize-none ${
                   isLocked && user?.role !== 'user' ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
-                placeholder={isLocked && user?.role !== 'user' ? 'Ticket is being edited by another agent...' : 'Write your reply...'}
+                placeholder={isLocked && user?.role !== 'user' ? 'La solicitud esta siendo editada por otro agente...' : 'Escribe tu respuesta...'}
               />
               <div className="flex items-center justify-between gap-3">
                 <SavedReplyPicker
@@ -569,7 +569,7 @@ const TicketDetail = () => {
                         onChange={(e) => setIsInternal(e.target.checked)}
                         className="w-4 h-4"
                       />
-                      Internal note (not visible to customer)
+                      Nota interna (no visible para el cliente)
                     </label>
                   )}
                   <button
@@ -578,7 +578,7 @@ const TicketDetail = () => {
                     className="flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     <Send size={16} />
-                    {submitting ? 'Sending...' : 'Send Reply'}
+                    {submitting ? 'Enviando...' : 'Enviar respuesta'}
                   </button>
                 </div>
               </div>
@@ -590,7 +590,7 @@ const TicketDetail = () => {
         <div className="space-y-6">
           {}
           <div className="bg-card p-4 rounded-lg shadow-sm border border-border">
-            <h3 className="text-sm font-semibold text-foreground mb-3">Status</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-3">Estado</h3>
             <select
               value={ticket.status._id}
               onChange={(e) => handleStatusChange(e.target.value)}
@@ -612,7 +612,7 @@ const TicketDetail = () => {
             ticket.status?.title?.toLowerCase().includes('closed') || 
             ticket.status?.title?.toLowerCase().includes('resolved')) && (
             <div className="bg-card p-4 rounded-lg shadow-sm border border-border">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Customer Feedback</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Opiniones del cliente</h3>
               
               {user?.role !== 'user' && !surveyLink && (
                 <button
@@ -620,14 +620,14 @@ const TicketDetail = () => {
                   className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                 >
                   <Star size={16} />
-                  Send Survey
+                  Enviar encuesta
                 </button>
               )}
 
               {surveyLink && (
                 <div className="mt-3 p-3 bg-green-50 rounded-md">
                   <p className="text-xs text-green-800 mb-2">
-                    {user?.role === 'user' ? 'Please share your feedback:' : 'Survey created! Share this link:'}
+                    {user?.role === 'user' ? 'Por favor comparte tu opinion:' : 'Encuesta creada. Comparte este enlace:'}
                   </p>
                   <div className="flex gap-2">
                     <input
@@ -639,11 +639,11 @@ const TicketDetail = () => {
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(surveyLink);
-                        toast.success('Link copied!');
+                        toast.success('Enlace copiado');
                       }}
                       className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700"
                     >
-                      Copy
+                      Copiar
                     </button>
                   </div>
                   {user?.role === 'user' && (
@@ -653,7 +653,7 @@ const TicketDetail = () => {
                       rel="noopener noreferrer"
                       className="mt-2 block w-full px-4 py-2 bg-blue-600 text-white text-center rounded-md hover:bg-blue-700 transition-colors"
                     >
-                      Take Survey
+                      Responder encuesta
                     </a>
                   )}
                 </div>
@@ -661,7 +661,7 @@ const TicketDetail = () => {
 
               {!surveyLink && user?.role === 'user' && (
                 <p className="text-sm text-gray-600">
-                  A satisfaction survey will be sent to you soon.
+                  Se te enviara una encuesta de satisfaccion pronto.
                 </p>
               )}
             </div>
@@ -670,7 +670,7 @@ const TicketDetail = () => {
           {}
           {user?.role !== 'user' && (
             <div className="bg-card p-4 rounded-lg shadow-sm border border-border">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Assigned To</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Asignada a</h3>
               <select
                 value={ticket.assignedTo?._id || ''}
                 onChange={(e) => handleAssignChange(e.target.value)}
@@ -679,7 +679,7 @@ const TicketDetail = () => {
                   isLocked && user?.role !== 'user' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
                 }`}
               >
-                <option value="">Unassigned</option>
+                <option value="">Sin asignar</option>
                 {users
                   .filter((u) => u.role === 'admin' || u.role === 'agent')
                   .map((u) => (
@@ -693,12 +693,12 @@ const TicketDetail = () => {
 
           {}
           <div className="bg-card p-4 rounded-lg shadow-sm border border-border space-y-3">
-            <h3 className="text-sm font-semibold text-foreground mb-3">Details</h3>
+            <h3 className="text-sm font-semibold text-foreground mb-3">Detalles</h3>
 
             <div className="flex items-start gap-2">
               <User size={16} className="text-muted-foreground mt-0.5" />
               <div className="flex-1">
-                <p className="text-xs text-muted-foreground">Created By</p>
+                <p className="text-xs text-muted-foreground">Creado por</p>
                 <p className="text-sm text-foreground font-medium">{ticket.createdBy.name}</p>
               </div>
             </div>
@@ -706,7 +706,7 @@ const TicketDetail = () => {
             <div className="flex items-start gap-2">
               <Clock size={16} className="text-muted-foreground mt-0.5" />
               <div className="flex-1">
-                <p className="text-xs text-muted-foreground">Created</p>
+                <p className="text-xs text-muted-foreground">Creado</p>
                 <p className="text-sm text-foreground">
                   {new Date(ticket.createdAt).toLocaleString()}
                 </p>
@@ -716,7 +716,7 @@ const TicketDetail = () => {
             <div className="flex items-start gap-2">
               <Clock size={16} className="text-muted-foreground mt-0.5" />
               <div className="flex-1">
-                <p className="text-xs text-muted-foreground">Last Activity</p>
+                <p className="text-xs text-muted-foreground">Ultima actividad</p>
                 <p className="text-sm text-foreground">
                   {new Date(ticket.lastActivityAt).toLocaleString()}
                 </p>
@@ -726,7 +726,7 @@ const TicketDetail = () => {
             <div className="flex items-start gap-2">
               <Tag size={16} className="text-muted-foreground mt-0.5" />
               <div className="flex-1">
-                <p className="text-xs text-muted-foreground">Department</p>
+                <p className="text-xs text-muted-foreground">Departamento</p>
                 <p className="text-sm text-foreground font-medium">{ticket.department.name}</p>
               </div>
             </div>
@@ -735,7 +735,7 @@ const TicketDetail = () => {
           {}
           {user?.role !== 'user' && (
             <div className="bg-card p-4 rounded-lg shadow-sm border border-border space-y-3">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Advanced Actions</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Acciones avanzadas</h3>
 
               <button
                 onClick={() => {
@@ -745,7 +745,7 @@ const TicketDetail = () => {
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm bg-muted hover:bg-muted/80 text-foreground rounded transition-all"
               >
                 <GitMerge size={16} />
-                Merge Ticket
+                Combinar solicitudes
               </button>
 
               <button
@@ -756,7 +756,7 @@ const TicketDetail = () => {
                 className="w-full flex items-center gap-2 px-3 py-2 text-sm bg-muted hover:bg-muted/80 text-foreground rounded transition-all"
               >
                 <Link2 size={16} />
-                Add Dependency
+                Agregar dependencia
               </button>
             </div>
           )}
@@ -764,7 +764,7 @@ const TicketDetail = () => {
           {}
           {ticket.dependencies && ticket.dependencies.length > 0 && (
             <div className="bg-card p-4 rounded-lg shadow-sm border border-border">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Dependencies</h3>
+              <h3 className="text-sm font-semibold text-foreground mb-3">Dependencias</h3>
               <div className="space-y-2">
                 {ticket.dependencies.map((dep) => (
                   <div key={dep._id} className="flex items-center justify-between p-2 bg-muted rounded">
@@ -779,7 +779,7 @@ const TicketDetail = () => {
                         onClick={() => handleRemoveDependency(dep.dependentTicket._id)}
                         className="text-xs text-destructive hover:text-destructive/80"
                       >
-                        Remove
+                        Eliminar
                       </button>
                     )}
                   </div>
@@ -794,16 +794,16 @@ const TicketDetail = () => {
       {showMergeModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-lg shadow-xl max-w-md w-full p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Merge Ticket</h2>
+            <h2 className="text-xl font-bold text-foreground mb-4">Combinar solicitudes</h2>
             <p className="text-sm text-muted-foreground mb-4">
-              Select the target ticket to merge this ticket into. This action cannot be undone.
+              Selecciona la solicitud destino para fusionar esta solicitud. Esta accion no se puede deshacer.
             </p>
             <select
               value={mergeTargetId}
               onChange={(e) => setMergeTargetId(e.target.value)}
               className="w-full px-4 py-2 border-2 border-border rounded-md bg-background text-foreground mb-4"
             >
-              <option value="">Select target ticket</option>
+              <option value="">Selecciona la solicitud destino</option>
               {allTickets.map((t) => (
                 <option key={t._id} value={t._id}>
                   {t.ticketNumber} - {t.title}
@@ -815,13 +815,13 @@ const TicketDetail = () => {
                 onClick={handleMerge}
                 className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded font-semibold hover:opacity-90"
               >
-                Merge
+                Combinar
               </button>
               <button
                 onClick={() => setShowMergeModal(false)}
                 className="px-4 py-2 bg-muted text-foreground rounded font-semibold hover:bg-muted/80"
               >
-                Cancel
+                Cancelar
               </button>
             </div>
           </div>
@@ -832,32 +832,32 @@ const TicketDetail = () => {
       {showDependencyModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-card rounded-lg shadow-xl max-w-md w-full p-6">
-            <h2 className="text-xl font-bold text-foreground mb-4">Add Dependency</h2>
+            <h2 className="text-xl font-bold text-foreground mb-4">Agregar dependencia</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Dependency Type
+                  Tipo de dependencia
                 </label>
                 <select
                   value={dependencyData.type}
                   onChange={(e) => setDependencyData({ ...dependencyData, type: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-border rounded-md bg-background text-foreground"
                 >
-                  <option value="blocks">Blocks</option>
-                  <option value="blocked_by">Blocked By</option>
-                  <option value="related">Related To</option>
+                  <option value="blocks">Bloquea</option>
+                  <option value="blocked_by">Bloqueada por</option>
+                  <option value="related">Relacionada con</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Select Ticket
+                  Selecciona la solicitud
                 </label>
                 <select
                   value={dependencyData.ticketId}
                   onChange={(e) => setDependencyData({ ...dependencyData, ticketId: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-border rounded-md bg-background text-foreground"
                 >
-                  <option value="">Select ticket</option>
+                  <option value="">Selecciona la solicitud</option>
                   {allTickets.map((t) => (
                     <option key={t._id} value={t._id}>
                       {t.ticketNumber} - {t.title}
@@ -871,13 +871,13 @@ const TicketDetail = () => {
                 onClick={handleAddDependency}
                 className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded font-semibold hover:opacity-90"
               >
-                Add Dependency
+                Agregar dependencia
               </button>
               <button
                 onClick={() => setShowDependencyModal(false)}
                 className="px-4 py-2 bg-muted text-foreground rounded font-semibold hover:bg-muted/80"
               >
-                Cancel
+                Cancelar
               </button>
             </div>
           </div>

@@ -28,7 +28,7 @@ const Layout = () => {
     <div className="flex h-screen bg-background overflow-hidden">
       <aside className="w-64 bg-sidebar text-sidebar-foreground flex flex-col fixed h-full overflow-y-auto border-r border-sidebar-border">
         <div className="p-6 border-b border-sidebar-border">
-          <h2 className="text-2xl font-bold mb-1 text-sidebar-foreground">Support Desk</h2>
+          <h2 className="text-2xl font-bold mb-1 text-sidebar-foreground">Mesa de Ayuda</h2>
           <p className="text-sm text-muted-foreground capitalize">{user?.role}</p>
         </div>
 
@@ -38,7 +38,7 @@ const Layout = () => {
             className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
           >
             <LayoutDashboard size={20} />
-            <span>Dashboard</span>
+            <span>Panel</span>
           </Link>
 
           <Link
@@ -46,7 +46,7 @@ const Layout = () => {
             className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
           >
             <Ticket size={20} />
-            <span>Tickets</span>
+            <span>Solicitudes</span>
           </Link>
 
           <Link
@@ -54,7 +54,7 @@ const Layout = () => {
             className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
           >
             <BarChart3 size={20} />
-            <span>Analytics</span>
+            <span>Analitica</span>
           </Link>
 
           <Link
@@ -62,7 +62,7 @@ const Layout = () => {
             className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
           >
             <Grid3x3 size={20} />
-            <span>Custom Dashboard</span>
+            <span>Panel personalizado</span>
           </Link>
 
           <Link
@@ -70,7 +70,7 @@ const Layout = () => {
             className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
           >
             <Star size={20} />
-            <span>Surveys</span>
+            <span>Encuestas</span>
           </Link>
 
           {(user?.role === 'admin' || user?.role === 'agent') && (
@@ -80,7 +80,7 @@ const Layout = () => {
                 className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
               >
                 <MessageSquare size={20} />
-                <span>Saved Replies</span>
+                <span>Respuestas guardadas</span>
               </Link>
 
               <Link
@@ -88,7 +88,7 @@ const Layout = () => {
                 className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
               >
                 <FileText size={20} />
-                <span>Ticket Templates</span>
+                <span>Plantillas de tickets</span>
               </Link>
             </>
           )}
@@ -100,7 +100,7 @@ const Layout = () => {
                 className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
               >
                 <FolderOpen size={20} />
-                <span>Departments</span>
+                <span>Departamentos</span>
               </Link>
 
               <Link
@@ -108,7 +108,7 @@ const Layout = () => {
                 className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
               >
                 <Settings size={20} />
-                <span>Statuses</span>
+                <span>Estados</span>
               </Link>
             </>
           )}
@@ -119,7 +119,7 @@ const Layout = () => {
               className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
             >
               <Users size={20} />
-              <span>Users</span>
+              <span>Usuarios</span>
             </Link>
           )}
 
@@ -129,7 +129,7 @@ const Layout = () => {
               className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
             >
               <TrendingUp size={20} />
-              <span>Escalation Rules</span>
+              <span>Reglas de escalamiento</span>
             </Link>
           )}
         </nav>
@@ -144,7 +144,7 @@ const Layout = () => {
             className="flex items-center gap-2 w-full px-3 py-3 bg-destructive/10 text-destructive rounded-md hover:bg-destructive/20 transition-all"
           >
             <LogOut size={20} />
-            <span>Logout</span>
+            <span>Cerrar sesion</span>
           </button>
         </div>
       </aside>

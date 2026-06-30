@@ -44,14 +44,14 @@ const CustomDashboard = () => {
   const [dragOverIndex, setDragOverIndex] = useState(null);
 
   const availableWidgets = [
-    { id: 'overview', name: 'Overview Stats', type: 'stats' },
-    { id: 'priority-pie', name: 'Priority Distribution', type: 'chart' },
-    { id: 'status-bar', name: 'Status Breakdown', type: 'chart' },
-    { id: 'timeline', name: 'Tickets Timeline', type: 'chart' },
-    { id: 'predictions', name: 'ML Predictions', type: 'chart' },
-    { id: 'anomalies', name: 'Anomaly Detection', type: 'list' },
-    { id: 'nl-search', name: 'Natural Language Search', type: 'search' },
-    { id: 'scheduled-reports', name: 'Email Reports', type: 'settings' },
+    { id: 'overview', name: 'Resumen general', type: 'stats' },
+    { id: 'priority-pie', name: 'Distribucion por prioridad', type: 'chart' },
+    { id: 'status-bar', name: 'Desglose por estado', type: 'chart' },
+    { id: 'timeline', name: 'Cronologia de solicitudes', type: 'chart' },
+    { id: 'predictions', name: 'Predicciones ML', type: 'chart' },
+    { id: 'anomalies', name: 'Deteccion de anomalias', type: 'list' },
+    { id: 'nl-search', name: 'Busqueda en lenguaje natural', type: 'search' },
+    { id: 'scheduled-reports', name: 'Reportes por correo', type: 'settings' },
   ];
 
   useEffect(() => {
@@ -66,7 +66,8 @@ const CustomDashboard = () => {
     if (saved) {
       const savedWidgets = JSON.parse(saved);
       setWidgets(savedWidgets);
-    } else {
+    } else {
+
       const defaultWidgets = ['overview', 'priority-pie', 'timeline'];
       setWidgets(defaultWidgets);
     }
@@ -77,13 +78,13 @@ const CustomDashboard = () => {
       `dashboard-${user._id}`,
       JSON.stringify(widgets)
     );
-    toast.success('Dashboard saved!');
+    toast.success('Panel guardado');
   };
 
   const resetDashboard = () => {
     localStorage.removeItem(`dashboard-${user._id}`);
     loadDashboard();
-    toast.success('Dashboard reset to default');
+    toast.success('Panel restablecido al valor predeterminado');
   };
 
   const fetchAnalytics = async () => {
@@ -115,18 +116,18 @@ const CustomDashboard = () => {
 
   const addWidget = (widgetId) => {
     if (widgets.includes(widgetId)) {
-      toast.error('Widget already added');
+      toast.error('El widget ya fue agregado');
       return;
     }
 
     setWidgets([...widgets, widgetId]);
     setShowAddWidget(false);
-    toast.success('Widget added');
+    toast.success('Widget agregado');
   };
 
   const removeWidget = (widgetId) => {
     setWidgets(widgets.filter((w) => w !== widgetId));
-    toast.success('Widget removed');
+    toast.success('Widget eliminado');
   };
 
   const moveWidget = (widgetId, direction) => {
@@ -140,7 +141,8 @@ const CustomDashboard = () => {
       [newWidgets[index], newWidgets[index + 1]] = [newWidgets[index + 1], newWidgets[index]];
       setWidgets(newWidgets);
     }
-  };
+  };
+
   const handleDragStart = (e, widgetId, index) => {
     setDraggedWidget({ id: widgetId, index });
     e.dataTransfer.effectAllowed = 'move';
@@ -183,33 +185,33 @@ const CustomDashboard = () => {
     setWidgets(newWidgets);
     setDraggedWidget(null);
     setDragOverIndex(null);
-    toast.success('Widget moved');
+    toast.success('Widget movido');
   };
 
   const handleNLQuery = async () => {
     if (!nlQuery.trim()) {
-      toast.error('Please enter a query');
+      toast.error('Ingresa una consulta');
       return;
     }
 
     try {
       const { data } = await api.post('/analytics/nl-query', { query: nlQuery });
       setNlResults(data);
-      toast.success(`Found ${data.totalResults} results`);
+      toast.success(`Se encontraron ${data.totalResults} resultados`);
     } catch (error) {
       console.error('NL Query failed:', error);
-      toast.error('Failed to process query');
+      toast.error('No se pudo procesar la consulta');
     }
   };
 
   const scheduleReport = async (frequency) => {
     try {
       await api.post('/analytics/schedule-report', { frequency });
-      toast.success(`${frequency} report scheduled`);
+      toast.success(`Reporte ${frequency} programado`);
       fetchScheduledReports();
     } catch (error) {
       console.error('Failed to schedule report:', error);
-      toast.error('Failed to schedule report');
+      toast.error('No se pudo programar el reporte');
     }
   };
 
@@ -223,36 +225,36 @@ const CustomDashboard = () => {
       document.body.appendChild(link);
       link.click();
       link.remove();
-      toast.success('PDF downloaded');
+      toast.success('PDF descargado');
     } catch (error) {
       console.error('PDF download failed:', error);
-      toast.error('Failed to download PDF');
+      toast.error('No se pudo descargar el PDF');
     }
   };
 
   const renderWidget = (widgetId) => {
-    if (!analytics) return <div className="p-4">Loading...</div>;
+    if (!analytics) return <div className="p-4">Cargando...</div>;
 
     switch (widgetId) {
       case 'overview':
         return (
           <div className="p-4 space-y-3">
-            <h3 className="font-bold text-lg">Overview</h3>
+            <h3 className="font-bold text-lg">Resumen</h3>
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-muted p-3 rounded">
                 <p className="text-xs text-muted-foreground">Total</p>
                 <p className="text-2xl font-bold">{analytics.overview.totalTickets}</p>
               </div>
               <div className="bg-muted p-3 rounded">
-                <p className="text-xs text-muted-foreground">Open</p>
+                <p className="text-xs text-muted-foreground">Abiertas</p>
                 <p className="text-2xl font-bold text-chart-3">{analytics.overview.openTickets}</p>
               </div>
               <div className="bg-muted p-3 rounded">
-                <p className="text-xs text-muted-foreground">Closed</p>
+                <p className="text-xs text-muted-foreground">Cerradas</p>
                 <p className="text-2xl font-bold text-chart-1">{analytics.overview.closedTickets}</p>
               </div>
               <div className="bg-muted p-3 rounded">
-                <p className="text-xs text-muted-foreground">Avg Response</p>
+                <p className="text-xs text-muted-foreground">Respuesta promedio</p>
                 <p className="text-2xl font-bold">{analytics.overview.avgResponseTime}m</p>
               </div>
             </div>
@@ -266,7 +268,7 @@ const CustomDashboard = () => {
         }));
         return (
           <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Priority Distribution</h3>
+            <h3 className="font-bold text-lg mb-2">Distribucion por prioridad</h3>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
@@ -295,7 +297,7 @@ const CustomDashboard = () => {
         }));
         return (
           <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Status Breakdown</h3>
+            <h3 className="font-bold text-lg mb-2">Desglose por estado</h3>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={statusData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -315,7 +317,7 @@ const CustomDashboard = () => {
         }));
         return (
           <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Tickets Timeline</h3>
+            <h3 className="font-bold text-lg mb-2">Cronologia de solicitudes</h3>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={timelineData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -329,29 +331,29 @@ const CustomDashboard = () => {
         );
 
       case 'predictions':
-        if (!mlPredictions) return <div className="p-4">Loading predictions...</div>;
+        if (!mlPredictions) return <div className="p-4">Cargando predicciones...</div>;
         return (
           <div className="p-4">
             <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
               <Sparkles size={20} />
-              ML Predictions
+              Predicciones ML
             </h3>
             <div className="space-y-2">
               <p className="text-sm">
-                <span className="font-semibold">Trend:</span> {mlPredictions.insights?.trend}
+                <span className="font-semibold">Tendencia:</span> {mlPredictions.insights?.trend}
               </p>
               <p className="text-sm">
-                <span className="font-semibold">Avg Daily:</span> {mlPredictions.insights?.avgDaily} tickets
+                <span className="font-semibold">Promedio diario:</span> {mlPredictions.insights?.avgDaily} solicitudes
               </p>
               <p className="text-sm">
-                <span className="font-semibold">Data Quality:</span> {mlPredictions.insights?.dataQuality}
+                <span className="font-semibold">Calidad de datos:</span> {mlPredictions.insights?.dataQuality}
               </p>
               <div className="mt-3">
-                <p className="text-xs text-muted-foreground mb-2">Next 7 Days Forecast:</p>
+                <p className="text-xs text-muted-foreground mb-2">Pronostico de los proximos 7 dias:</p>
                 {mlPredictions.predictions?.slice(0, 3).map((pred) => (
                   <div key={pred.date} className="flex justify-between text-sm py-1">
                     <span>{new Date(pred.date).toLocaleDateString()}</span>
-                    <span className="font-semibold">{pred.predictedCount} tickets</span>
+                    <span className="font-semibold">{pred.predictedCount} solicitudes</span>
                   </div>
                 ))}
               </div>
@@ -360,12 +362,12 @@ const CustomDashboard = () => {
         );
 
       case 'anomalies':
-        if (!mlPredictions?.anomalies) return <div className="p-4">No anomalies detected</div>;
+        if (!mlPredictions?.anomalies) return <div className="p-4">No se detectaron anomalias</div>;
         return (
           <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Anomaly Detection</h3>
+            <h3 className="font-bold text-lg mb-2">Deteccion de anomalias</h3>
             {mlPredictions.anomalies.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No anomalies detected</p>
+              <p className="text-sm text-muted-foreground">No se detectaron anomalias</p>
             ) : (
               <div className="space-y-2">
                 {mlPredictions.anomalies.map((anomaly, index) => (

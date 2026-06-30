@@ -55,14 +55,14 @@ const TicketTemplates = () => {
   });
 
   const categories = [
-    { value: 'all', label: 'All Categories' },
-    { value: 'technical', label: 'Technical' },
-    { value: 'billing', label: 'Billing' },
-    { value: 'account', label: 'Account' },
-    { value: 'feature_request', label: 'Feature Request' },
-    { value: 'bug_report', label: 'Bug Report' },
+    { value: 'all', label: 'Todas las categorias' },
+    { value: 'technical', label: 'Tecnica' },
+    { value: 'billing', label: 'Facturacion' },
+    { value: 'account', label: 'Cuenta' },
+    { value: 'feature_request', label: 'Solicitud de funcion' },
+    { value: 'bug_report', label: 'Reporte de error' },
     { value: 'general', label: 'General' },
-    { value: 'other', label: 'Other' },
+    { value: 'other', label: 'Otra' },
   ];
 
   const iconOptions = [
@@ -92,7 +92,8 @@ const TicketTemplates = () => {
     '#EC4899',
     '#06B6D4',
     '#6366F1',
-  ];
+  ];
+
   const renderIcon = (iconName, size = 24, className = '') => {
     const iconOption = iconOptions.find((opt) => opt.name === iconName);
     if (iconOption) {
@@ -163,12 +164,12 @@ const TicketTemplates = () => {
       fetchTemplates();
     } catch (error) {
       console.error('Error saving template:', error);
-      alert(error.response?.data?.message || 'Error saving template');
+      alert(error.response?.data?.message || 'Error al guardar la plantilla');
     }
   };
 
   const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this template?')) return;
+    if (!confirm('Estas seguro de que quieres eliminar esta plantilla?')) return;
 
     try {
       const token = localStorage.getItem('token');
@@ -178,7 +179,7 @@ const TicketTemplates = () => {
       fetchTemplates();
     } catch (error) {
       console.error('Error deleting template:', error);
-      alert('Error deleting template');
+      alert('Error al eliminar la plantilla');
     }
   };
 
@@ -195,7 +196,7 @@ const TicketTemplates = () => {
       fetchTemplates();
     } catch (error) {
       console.error('Error duplicating template:', error);
-      alert('Error duplicating template');
+      alert('Error al duplicar la plantilla');
     }
   };
 
@@ -274,15 +275,15 @@ const TicketTemplates = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
+    return <div className="flex justify-center items-center h-64">Cargando...</div>;
   }
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Ticket Templates</h1>
-          <p className="text-gray-600 mt-1">Create tickets faster with pre-defined templates</p>
+          <h1 className="text-2xl font-bold text-gray-900">Plantillas de tickets</h1>
+          <p className="text-gray-600 mt-1">Crea solicitudes mas rapido con plantillas predefinidas</p>
         </div>
         <button
           onClick={() => {
@@ -292,7 +293,7 @@ const TicketTemplates = () => {
           className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus size={20} />
-          New Template
+          Nueva plantilla
         </button>
       </div>
 
@@ -306,7 +307,7 @@ const TicketTemplates = () => {
             />
             <input
               type="text"
-              placeholder="Search templates..."
+              placeholder="Buscar plantillas..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -379,7 +380,7 @@ const TicketTemplates = () => {
               </div>
 
               <div className="mb-3">
-                <p className="text-xs font-medium text-gray-500 mb-1">Ticket Title:</p>
+                <p className="text-xs font-medium text-gray-500 mb-1">Titulo de la solicitud:</p>
                 <p className="text-sm text-gray-700 line-clamp-1">{template.title}</p>
               </div>
 
@@ -399,7 +400,7 @@ const TicketTemplates = () => {
               <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                 <div className="flex items-center gap-1">
                   <TrendingUp size={14} />
-                  <span>Used {template.usageCount} times</span>
+                  <span>Usada {template.usageCount} veces</span>
                 </div>
                 {template.department && (
                   <span className="text-blue-600">{template.department.name}</span>
@@ -412,7 +413,7 @@ const TicketTemplates = () => {
                   className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm font-medium"
                 >
                   <FileText size={16} />
-                  Use Template
+                  Usar plantilla
                 </button>
                 <button
                   onClick={() => handleEdit(template)}
@@ -440,7 +441,7 @@ const TicketTemplates = () => {
 
       {filteredTemplates.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500">No templates found. Create your first one!</p>
+          <p className="text-gray-500">No se encontraron plantillas. Crea la primera!</p>
         </div>
       )}
 
@@ -450,7 +451,7 @@ const TicketTemplates = () => {
           <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <h2 className="text-xl font-bold mb-4">
-                {editingTemplate ? 'Edit Template' : 'Create Template'}
+                {editingTemplate ? 'Editar plantilla' : 'Crear plantilla'}
               </h2>
 
               <form onSubmit={handleSubmit}>
@@ -458,7 +459,7 @@ const TicketTemplates = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Template Name *
+                        Nombre de la plantilla *
                       </label>
                       <input
                         type="text"
@@ -466,13 +467,13 @@ const TicketTemplates = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="e.g., Password Reset Request"
+                        placeholder="ej., Solicitud de reinicio de contrasena"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Category
+                        Categoria
                       </label>
                       <select
                         value={formData.category}
@@ -490,20 +491,20 @@ const TicketTemplates = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Description
+                      Descripcion
                     </label>
                     <input
                       type="text"
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Brief description of this template"
+                      placeholder="Breve descripcion de esta plantilla"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Ticket Title *
+                        Titulo de la solicitud *
                     </label>
                     <input
                       type="text"
@@ -511,13 +512,13 @@ const TicketTemplates = () => {
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Default title for tickets created from this template"
+                      placeholder="Titulo predeterminado para solicitudes creadas con esta plantilla"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Ticket Content *
+                      Contenido de la solicitud *
                     </label>
                     <textarea
                       required
@@ -525,44 +526,44 @@ const TicketTemplates = () => {
                       onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                       rows={6}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Default content for tickets..."
+                      placeholder="Contenido predeterminado para solicitudes..."
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Default Priority
+                        Prioridad predeterminada
                       </label>
                       <select
                         value={formData.priority}
                         onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                        <option value="urgent">Urgent</option>
+                        <option value="low">Baja</option>
+                        <option value="medium">Media</option>
+                        <option value="high">Alta</option>
+                        <option value="urgent">Urgente</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Tags (comma-separated)
+                        Etiquetas (separadas por comas)
                       </label>
                       <input
                         type="text"
                         value={formData.tags}
                         onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="password, reset, account"
+                        placeholder="contrasena, reinicio, cuenta"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Icon</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Icono</label>
                       <div className="flex gap-2 flex-wrap">
                         {iconOptions.map((iconOption) => (
                           <button
@@ -604,16 +605,16 @@ const TicketTemplates = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Visibility
+                        Visibilidad
                       </label>
                       <select
                         value={formData.visibility}
                         onChange={(e) => setFormData({ ...formData, visibility: e.target.value })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
-                        <option value="private">Private (Only Me)</option>
-                        <option value="department">Department</option>
-                        <option value="global">Global (All Users)</option>
+                        <option value="private">Privada (solo yo)</option>
+                        <option value="department">Departamento</option>
+                        <option value="global">Global (todos los usuarios)</option>
                       </select>
                     </div>
 
@@ -630,7 +631,7 @@ const TicketTemplates = () => {
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                           required={formData.visibility === 'department'}
                         >
-                          <option value="">Select Department</option>
+                          <option value="">Selecciona un departamento</option>
                           {departments.map((dept) => (
                             <option key={dept._id} value={dept._id}>
                               {dept.name}
@@ -649,7 +650,7 @@ const TicketTemplates = () => {
                         onChange={(e) => setFormData({ ...formData, isPublic: e.target.checked })}
                         className="w-4 h-4"
                       />
-                      Make this template public (visible to non-authenticated users)
+                      Hacer esta plantilla publica (visible para usuarios no autenticados)
                     </label>
                   </div>
                 </div>
@@ -659,7 +660,7 @@ const TicketTemplates = () => {
                     type="submit"
                     className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                   >
-                    {editingTemplate ? 'Update' : 'Create'}
+                    {editingTemplate ? 'Actualizar' : 'Crear'}
                   </button>
                   <button
                     type="button"
@@ -669,7 +670,7 @@ const TicketTemplates = () => {
                     }}
                     className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
                   >
-                    Cancel
+                    Cancelar
                   </button>
                 </div>
               </form>

@@ -26,7 +26,7 @@ const Departments = () => {
       setDepartments(data.data);
     } catch (error) {
       console.error('Failed to fetch departments:', error);
-      toast.error('Failed to load departments');
+      toast.error('No se pudieron cargar los departamentos');
     } finally {
       setLoading(false);
     }
@@ -37,17 +37,17 @@ const Departments = () => {
     try {
       if (editingDept) {
         await api.put(`/departments/${editingDept._id}`, formData);
-        toast.success('Department updated successfully');
+        toast.success('Departamento actualizado correctamente');
       } else {
         await api.post('/departments', formData);
-        toast.success('Department created successfully');
+        toast.success('Departamento creado correctamente');
       }
       setShowModal(false);
       resetForm();
       fetchDepartments();
     } catch (error) {
       console.error('Failed to save department:', error);
-      toast.error(error.response?.data?.message || 'Failed to save department');
+      toast.error(error.response?.data?.message || 'No se pudo guardar el departamento');
     }
   };
 
@@ -63,15 +63,15 @@ const Departments = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this department?')) return;
+    if (!window.confirm('Estas seguro de que quieres eliminar este departamento?')) return;
 
     try {
       await api.delete(`/departments/${id}`);
-      toast.success('Department deleted successfully');
+      toast.success('Departamento eliminado correctamente');
       fetchDepartments();
     } catch (error) {
       console.error('Failed to delete department:', error);
-      toast.error('Failed to delete department');
+      toast.error('No se pudo eliminar el departamento');
     }
   };
 
@@ -93,19 +93,19 @@ const Departments = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Departments</h1>
+        <h1 className="text-3xl font-bold text-foreground">Departamentos</h1>
         <button
           onClick={() => setShowModal(true)}
           className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 hover:-translate-y-0.5 transition-all shadow-sm"
         >
           <Plus size={20} />
-          Add Department
+          Agregar departamento
         </button>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px] text-lg text-muted-foreground">
-          Loading departments...
+          Cargando departamentos...
         </div>
       ) : (
         <div className="bg-card rounded-lg shadow-sm overflow-hidden border border-border">
@@ -113,11 +113,11 @@ const Departments = () => {
             <table className="w-full">
               <thead>
                 <tr className="bg-muted border-b-2 border-border">
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Name</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Email</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Description</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Visibility</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Actions</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Nombre</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Correo</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Descripcion</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Visibilidad</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -133,7 +133,7 @@ const Departments = () => {
                           : 'bg-chart-1/20 text-chart-1'
                       }`}>
                         {dept.isHidden ? <EyeOff size={14} /> : <Eye size={14} />}
-                        {dept.isHidden ? 'Hidden' : 'Visible'}
+                        {dept.isHidden ? 'Oculto' : 'Visible'}
                       </span>
                     </td>
                     <td className="px-4 py-4">
@@ -141,14 +141,14 @@ const Departments = () => {
                         <button
                           onClick={() => handleEdit(dept)}
                           className="p-2 text-primary hover:bg-primary/10 rounded-md transition-colors"
-                          title="Edit"
+                          title="Editar"
                         >
                           <Edit2 size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(dept._id)}
                           className="p-2 text-destructive hover:bg-destructive/10 rounded-md transition-colors"
-                          title="Delete"
+                          title="Eliminar"
                         >
                           <Trash2 size={18} />
                         </button>
@@ -167,14 +167,14 @@ const Departments = () => {
           <div className="bg-card rounded-lg shadow-xl max-w-md w-full border border-border">
             <div className="p-6 border-b border-border">
               <h2 className="text-2xl font-bold text-foreground">
-                {editingDept ? 'Edit Department' : 'Add Department'}
+                {editingDept ? 'Editar departamento' : 'Agregar departamento'}
               </h2>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Name *
+                  Nombre *
                 </label>
                 <input
                   type="text"
@@ -187,7 +187,7 @@ const Departments = () => {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Email *
+                  Correo *
                 </label>
                 <input
                   type="email"
@@ -200,7 +200,7 @@ const Departments = () => {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Description
+                  Descripcion
                 </label>
                 <textarea
                   value={formData.description}
@@ -219,7 +219,7 @@ const Departments = () => {
                   className="w-4 h-4 text-primary border-border rounded focus:ring-2 focus:ring-primary/20"
                 />
                 <label htmlFor="isHidden" className="text-sm text-foreground">
-                  Hide from users (admin only)
+                  Ocultar de usuarios (solo admin)
                 </label>
               </div>
 
@@ -228,14 +228,14 @@ const Departments = () => {
                   type="submit"
                   className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 transition-all"
                 >
-                  {editingDept ? 'Update' : 'Create'}
+                  {editingDept ? 'Actualizar' : 'Crear'}
                 </button>
                 <button
                   type="button"
                   onClick={handleCloseModal}
                   className="flex-1 px-4 py-2 bg-muted text-foreground rounded-md font-semibold hover:bg-muted/80 transition-all"
                 >
-                  Cancel
+                  Cancelar
                 </button>
               </div>
             </form>

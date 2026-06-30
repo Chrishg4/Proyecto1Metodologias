@@ -15,19 +15,21 @@ const AuthCallback = () => {
 
       if (error) {
         const errorMessages = {
-          no_code: 'Authorization code not received',
-          token_failed: 'Failed to exchange authorization code',
-          no_email: 'Email not provided by Google',
-          auth_failed: 'Authentication failed. Please try again.',
+          no_code: 'No se recibio el codigo de autorizacion',
+          token_failed: 'No se pudo intercambiar el codigo de autorizacion',
+          no_email: 'Google no proporciono el correo',
+          auth_failed: 'Error de autenticacion. Intentalo de nuevo.',
         };
-        toast.error(errorMessages[error] || 'Authentication failed');
+        toast.error(errorMessages[error] || 'Error de autenticacion');
         navigate('/login');
         return;
       }
 
       if (token) {
-        try {
-          localStorage.setItem('token', token);
+        try {
+
+          localStorage.setItem('token', token);
+
           const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -41,15 +43,15 @@ const AuthCallback = () => {
             toast.success('Successfully signed in with Google!');
             navigate('/');
           } else {
-            throw new Error('Failed to fetch user data');
+            throw new Error('No se pudo obtener la informacion del usuario');
           }
         } catch (error) {
           console.error('Auth callback error:', error);
-          toast.error('Failed to complete authentication');
+          toast.error('No se pudo completar la autenticacion');
           navigate('/login');
         }
       } else {
-        toast.error('No authentication token received');
+        toast.error('No se recibio un token de autenticacion');
         navigate('/login');
       }
     };
@@ -61,7 +63,7 @@ const AuthCallback = () => {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mb-4"></div>
-        <p className="text-lg text-muted-foreground">Completing sign in...</p>
+        <p className="text-lg text-muted-foreground">Completando el inicio de sesion...</p>
       </div>
     </div>
   );

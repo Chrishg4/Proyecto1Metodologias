@@ -51,12 +51,12 @@ const TicketTemplatePicker = ({ onSelect, onClose }) => {
   ];
 
   const categories = [
-    { value: 'all', label: 'All' },
-    { value: 'technical', label: 'Technical' },
-    { value: 'billing', label: 'Billing' },
-    { value: 'account', label: 'Account' },
-    { value: 'feature_request', label: 'Feature' },
-    { value: 'bug_report', label: 'Bug' },
+    { value: 'all', label: 'Todas' },
+    { value: 'technical', label: 'Tecnica' },
+    { value: 'billing', label: 'Facturacion' },
+    { value: 'account', label: 'Cuenta' },
+    { value: 'feature_request', label: 'Funcion' },
+    { value: 'bug_report', label: 'Error' },
     { value: 'general', label: 'General' },
   ];
 
@@ -126,7 +126,8 @@ const TicketTemplatePicker = ({ onSelect, onClose }) => {
       urgent: 'text-red-600',
     };
     return colors[priority] || colors.medium;
-  };
+  };
+
   const renderIcon = (iconName, size = 24) => {
     const iconOption = iconOptions.find((opt) => opt.name === iconName);
     if (iconOption) {
@@ -142,8 +143,8 @@ const TicketTemplatePicker = ({ onSelect, onClose }) => {
         {}
         <div className="p-4 border-b border-gray-200 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Choose a Template</h2>
-            <p className="text-sm text-gray-600">Start with a pre-defined template</p>
+            <h2 className="text-xl font-bold text-gray-900">Elige una plantilla</h2>
+            <p className="text-sm text-gray-600">Empieza con una plantilla predefinida</p>
           </div>
           <button
             onClick={onClose}
@@ -163,7 +164,7 @@ const TicketTemplatePicker = ({ onSelect, onClose }) => {
               />
               <input
                 type="text"
-                placeholder="Search templates..."
+                placeholder="Buscar plantillas..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
@@ -186,16 +187,16 @@ const TicketTemplatePicker = ({ onSelect, onClose }) => {
         {}
         <div className="flex-1 overflow-y-auto p-4">
           {loading ? (
-            <div className="text-center py-8 text-gray-500">Loading templates...</div>
+            <div className="text-center py-8 text-gray-500">Cargando plantillas...</div>
           ) : filteredTemplates.length === 0 ? (
             <div className="text-center py-8">
               <FileText size={48} className="mx-auto text-gray-300 mb-3" />
-              <p className="text-gray-500">No templates found</p>
+              <p className="text-gray-500">No se encontraron plantillas</p>
               <button
                 onClick={onClose}
                 className="mt-3 text-blue-600 hover:text-blue-700 text-sm"
               >
-                Create ticket from scratch
+                Crear solicitud desde cero
               </button>
             </div>
           ) : (
@@ -230,7 +231,7 @@ const TicketTemplatePicker = ({ onSelect, onClose }) => {
                       </div>
                       <div className="flex items-center gap-1 text-xs text-gray-500">
                         <TrendingUp size={12} />
-                        <span>Used {template.usageCount} times</span>
+                        <span>Usada {template.usageCount} veces</span>
                       </div>
                     </div>
                   </div>
@@ -246,7 +247,7 @@ const TicketTemplatePicker = ({ onSelect, onClose }) => {
             onClick={onClose}
             className="w-full py-2 text-sm text-gray-600 hover:text-gray-800"
           >
-            Or create ticket from scratch
+            O crear solicitud desde cero
           </button>
         </div>
       </div>

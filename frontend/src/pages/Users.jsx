@@ -21,7 +21,7 @@ const Users = () => {
       setUsers(data.data || []);
     } catch (error) {
       console.error('Failed to fetch users:', error);
-      toast.error('Failed to load users');
+      toast.error('No se pudieron cargar los usuarios');
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,7 @@ const Users = () => {
   if (currentUser?.role !== 'admin' && currentUser?.role !== 'agent') {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground">You don't have permission to access this page.</p>
+        <p className="text-muted-foreground">No tienes permiso para acceder a esta pagina.</p>
       </div>
     );
   }
@@ -58,7 +58,7 @@ const Users = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Users</h1>
+        <h1 className="text-3xl font-bold text-foreground">Usuarios</h1>
       </div>
 
       <div className="bg-card p-6 rounded-lg shadow-sm mb-6 border border-border">
@@ -71,7 +71,7 @@ const Users = () => {
                 : 'bg-muted text-foreground hover:bg-muted/80'
             }`}
           >
-            All Users ({users.length})
+            Todos los usuarios ({users.length})
           </button>
           <button
             onClick={() => setFilter('admin')}
@@ -81,7 +81,7 @@ const Users = () => {
                 : 'bg-muted text-foreground hover:bg-muted/80'
             }`}
           >
-            Admins ({users.filter((u) => u.role === 'admin').length})
+            Administradores ({users.filter((u) => u.role === 'admin').length})
           </button>
           <button
             onClick={() => setFilter('agent')}
@@ -91,7 +91,7 @@ const Users = () => {
                 : 'bg-muted text-foreground hover:bg-muted/80'
             }`}
           >
-            Agents ({users.filter((u) => u.role === 'agent').length})
+            Agentes ({users.filter((u) => u.role === 'agent').length})
           </button>
           <button
             onClick={() => setFilter('user')}
@@ -101,14 +101,14 @@ const Users = () => {
                 : 'bg-muted text-foreground hover:bg-muted/80'
             }`}
           >
-            Users ({users.filter((u) => u.role === 'user').length})
+            Usuarios ({users.filter((u) => u.role === 'user').length})
           </button>
         </div>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px] text-lg text-muted-foreground">
-          Loading users...
+          Cargando usuarios...
         </div>
       ) : (
         <div className="bg-card rounded-lg shadow-sm overflow-hidden border border-border">
@@ -116,18 +116,18 @@ const Users = () => {
             <table className="w-full">
               <thead>
                 <tr className="bg-muted border-b-2 border-border">
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Name</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Email</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Role</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Auth Provider</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Joined</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Nombre</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Correo</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Rol</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Proveedor de autenticacion</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Registro</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredUsers.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="px-4 py-12 text-center text-muted-foreground">
-                      No users found
+                      No se encontraron usuarios
                     </td>
                   </tr>
                 ) : (
@@ -186,20 +186,20 @@ const Users = () => {
       )}
 
       <div className="mt-6 bg-card p-6 rounded-lg shadow-sm border border-border">
-        <h2 className="text-lg font-semibold text-foreground mb-4">User Statistics</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Estadisticas de usuarios</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Total Users</p>
+            <p className="text-sm text-muted-foreground mb-1">Total de usuarios</p>
             <p className="text-2xl font-bold text-foreground">{users.length}</p>
           </div>
           <div className="p-4 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Active Today</p>
+            <p className="text-sm text-muted-foreground mb-1">Activos hoy</p>
             <p className="text-2xl font-bold text-foreground">
               {users.filter((u) => u.isEmailVerified).length}
             </p>
           </div>
           <div className="p-4 bg-muted rounded-lg">
-            <p className="text-sm text-muted-foreground mb-1">Google Auth Users</p>
+            <p className="text-sm text-muted-foreground mb-1">Usuarios con Google</p>
             <p className="text-2xl font-bold text-foreground">
               {users.filter((u) => u.authProvider === 'google').length}
             </p>

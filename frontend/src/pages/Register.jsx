@@ -52,7 +52,7 @@ const Register = () => {
     e.preventDefault();
 
     if (passwordValidation && passwordValidation.passedChecks < 4) {
-      toast.error('Please create a stronger password');
+      toast.error('Crea una contrasena mas segura');
       return;
     }
 
@@ -60,10 +60,10 @@ const Register = () => {
 
     try {
       await register(formData.name, formData.email, formData.password);
-      toast.success('Account created successfully!');
+      toast.success('Cuenta creada correctamente');
       navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+      toast.error(error.response?.data?.message || 'Error al registrar la cuenta');
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ const Register = () => {
   return (
     <div className="min-h-screen flex">
       {}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/90 to-chart-2 p-12 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-primary via-primary/90 to-chart-2 p-12 flex-col justify-between relative overflow-hidden">
         {}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
@@ -85,42 +85,42 @@ const Register = () => {
 
         <div className="relative z-10">
           <h1 className="text-4xl font-bold text-white mb-2">Support Desk</h1>
-          <p className="text-primary-foreground/80 text-lg">Streamline your customer support</p>
+          <p className="text-primary-foreground/80 text-lg">Optimiza tu atencion al cliente</p>
         </div>
 
         <div className="relative z-10 space-y-8">
           <div>
             <h2 className="text-3xl font-bold text-white mb-6">
-              Join thousands of teams managing support efficiently
+              Unete a miles de equipos que gestionan soporte de forma eficiente
             </h2>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="text-white mt-1 shrink-0" size={24} />
                 <div>
-                  <h3 className="text-white font-semibold text-lg">Quick Setup</h3>
-                  <p className="text-primary-foreground/80">Get started in minutes with our intuitive interface</p>
+                  <h3 className="text-white font-semibold text-lg">Configuracion rapida</h3>
+                  <p className="text-primary-foreground/80">Empieza en minutos con una interfaz intuitiva</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="text-white mt-1 shrink-0" size={24} />
                 <div>
-                  <h3 className="text-white font-semibold text-lg">Powerful Features</h3>
-                  <p className="text-primary-foreground/80">Everything you need to manage tickets effectively</p>
+                  <h3 className="text-white font-semibold text-lg">Funciones potentes</h3>
+                  <p className="text-primary-foreground/80">Todo lo que necesitas para gestionar solicitudes de forma efectiva</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="text-white mt-1 shrink-0" size={24} />
                 <div>
-                  <h3 className="text-white font-semibold text-lg">Free to Start</h3>
-                  <p className="text-primary-foreground/80">No credit card required, start managing tickets today</p>
+                  <h3 className="text-white font-semibold text-lg">Empieza gratis</h3>
+                  <p className="text-primary-foreground/80">No necesitas tarjeta, empieza a gestionar solicitudes hoy mismo</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 text-primary-foreground/60 text-sm">
-          © 2025 Support Desk. All rights reserved.
+          <div className="relative z-10 text-primary-foreground/60 text-sm">
+          © 2025 Mesa de Ayuda. Todos los derechos reservados.
         </div>
       </div>
 
@@ -128,8 +128,8 @@ const Register = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Create your account</h2>
-            <p className="text-muted-foreground">Start managing your support tickets today</p>
+            <h2 className="text-3xl font-bold text-foreground mb-2">Crea tu cuenta</h2>
+            <p className="text-muted-foreground">Empieza a gestionar tus solicitudes de soporte hoy</p>
           </div>
 
           {}
@@ -155,7 +155,7 @@ const Register = () => {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            Sign up with Google
+            Registrarse con Google
           </button>
 
           <div className="relative mb-6">
@@ -163,14 +163,14 @@ const Register = () => {
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-background text-muted-foreground">Or continue with email</span>
+              <span className="px-4 bg-background text-muted-foreground">O continuar con correo</span>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Full Name
+                Nombre completo
               </label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
@@ -180,7 +180,7 @@ const Register = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  placeholder="John Doe"
+                  placeholder="Juan Perez"
                   className="w-full pl-11 pr-4 py-3 border-2 border-border rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
               </div>
@@ -188,7 +188,7 @@ const Register = () => {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Email Address
+                Correo electronico
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
@@ -198,7 +198,7 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="you@example.com"
+                  placeholder="tu@ejemplo.com"
                   className="w-full pl-11 pr-4 py-3 border-2 border-border rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
               </div>
@@ -206,7 +206,7 @@ const Register = () => {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Password
+                Contrasena
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
@@ -216,7 +216,7 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  placeholder="Create a strong password"
+                  placeholder="Crea una contrasena segura"
                   className="w-full pl-11 pr-12 py-3 border-2 border-border rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <button
@@ -234,7 +234,7 @@ const Register = () => {
                   {}
                   <div className="space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">Password strength:</span>
+                      <span className="text-muted-foreground">Fortaleza de la contrasena:</span>
                       <span className={`font-semibold capitalize ${
                         passwordValidation.strength === 'strong' ? 'text-chart-1' :
                         passwordValidation.strength === 'medium' ? 'text-chart-3' :
@@ -259,7 +259,7 @@ const Register = () => {
                       ) : (
                         <X size={16} className="shrink-0" />
                       )}
-                      <span>At least 8 characters</span>
+                      <span>Al menos 8 caracteres</span>
                     </div>
                     <div className={`flex items-center gap-2 ${passwordValidation.checks.uppercase ? 'text-chart-1' : 'text-muted-foreground'}`}>
                       {passwordValidation.checks.uppercase ? (
@@ -267,7 +267,7 @@ const Register = () => {
                       ) : (
                         <X size={16} className="shrink-0" />
                       )}
-                      <span>One uppercase letter</span>
+                      <span>Una letra mayuscula</span>
                     </div>
                     <div className={`flex items-center gap-2 ${passwordValidation.checks.lowercase ? 'text-chart-1' : 'text-muted-foreground'}`}>
                       {passwordValidation.checks.lowercase ? (
@@ -275,7 +275,7 @@ const Register = () => {
                       ) : (
                         <X size={16} className="shrink-0" />
                       )}
-                      <span>One lowercase letter</span>
+                      <span>Una letra minuscula</span>
                     </div>
                     <div className={`flex items-center gap-2 ${passwordValidation.checks.number ? 'text-chart-1' : 'text-muted-foreground'}`}>
                       {passwordValidation.checks.number ? (
@@ -283,7 +283,7 @@ const Register = () => {
                       ) : (
                         <X size={16} className="shrink-0" />
                       )}
-                      <span>One number</span>
+                      <span>Un numero</span>
                     </div>
                     <div className={`flex items-center gap-2 ${passwordValidation.checks.special ? 'text-chart-1' : 'text-muted-foreground'}`}>
                       {passwordValidation.checks.special ? (
@@ -291,7 +291,7 @@ const Register = () => {
                       ) : (
                         <X size={16} className="shrink-0" />
                       )}
-                      <span>One special character (!@#$%^&*)</span>
+                      <span>Un caracter especial (!@#$%^&*)</span>
                     </div>
                   </div>
                 </div>
@@ -299,13 +299,13 @@ const Register = () => {
             </div>
 
             <div className="text-sm text-muted-foreground">
-              By creating an account, you agree to our{' '}
+                Al crear una cuenta, aceptas nuestros{' '}
               <Link to="/terms" className="text-primary hover:underline">
-                Terms of Service
+                Terminos del servicio
               </Link>{' '}
               and{' '}
               <Link to="/privacy" className="text-primary hover:underline">
-                Privacy Policy
+                Politica de privacidad
               </Link>
             </div>
 
@@ -314,15 +314,15 @@ const Register = () => {
               disabled={loading || (passwordValidation && passwordValidation.passedChecks < 4)}
               className="w-full py-3.5 bg-primary text-primary-foreground rounded-lg text-base font-semibold transition-all hover:opacity-90 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
             >
-              {loading ? 'Creating account...' : 'Create account'}
+              {loading ? 'Creando cuenta...' : 'Crear cuenta'}
               {!loading && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
             </button>
           </form>
 
           <p className="text-center mt-8 text-muted-foreground">
-            Already have an account?{' '}
+            Ya tienes una cuenta?{' '}
             <Link to="/login" className="text-primary font-semibold hover:underline">
-              Sign in
+              Iniciar sesion
             </Link>
           </p>
         </div>

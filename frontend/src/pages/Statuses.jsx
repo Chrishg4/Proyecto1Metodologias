@@ -28,7 +28,7 @@ const Statuses = () => {
       setStatuses(data.data);
     } catch (error) {
       console.error('Failed to fetch statuses:', error);
-      toast.error('Failed to load statuses');
+      toast.error('No se pudieron cargar los estados');
     } finally {
       setLoading(false);
     }
@@ -39,23 +39,23 @@ const Statuses = () => {
     try {
       if (editingStatus) {
         await api.put(`/statuses/${editingStatus._id}`, formData);
-        toast.success('Status updated successfully');
+        toast.success('Estado actualizado correctamente');
       } else {
         await api.post('/statuses', formData);
-        toast.success('Status created successfully');
+        toast.success('Estado creado correctamente');
       }
       setShowModal(false);
       resetForm();
       fetchStatuses();
     } catch (error) {
       console.error('Failed to save status:', error);
-      toast.error(error.response?.data?.message || 'Failed to save status');
+      toast.error(error.response?.data?.message || 'No se pudo guardar el estado');
     }
   };
 
   const handleEdit = (status) => {
     if (status.isSystem) {
-      toast.error('Cannot edit system status');
+      toast.error('No se puede editar un estado del sistema');
       return;
     }
     setEditingStatus(status);
@@ -72,19 +72,19 @@ const Statuses = () => {
 
   const handleDelete = async (status) => {
     if (status.isSystem) {
-      toast.error('Cannot delete system status');
+      toast.error('No se puede eliminar un estado del sistema');
       return;
     }
 
-    if (!window.confirm('Are you sure you want to delete this status?')) return;
+    if (!window.confirm('Estas seguro de que quieres eliminar este estado?')) return;
 
     try {
       await api.delete(`/statuses/${status._id}`);
-      toast.success('Status deleted successfully');
+      toast.success('Estado eliminado correctamente');
       fetchStatuses();
     } catch (error) {
       console.error('Failed to delete status:', error);
-      toast.error('Failed to delete status');
+      toast.error('No se pudo eliminar el estado');
     }
   };
 
@@ -108,19 +108,19 @@ const Statuses = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Statuses</h1>
+        <h1 className="text-3xl font-bold text-foreground">Estados</h1>
         <button
           onClick={() => setShowModal(true)}
           className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 hover:-translate-y-0.5 transition-all shadow-sm"
         >
           <Plus size={20} />
-          Add Status
+          Agregar estado
         </button>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px] text-lg text-muted-foreground">
-          Loading statuses...
+          Cargando estados...
         </div>
       ) : (
         <div className="bg-card rounded-lg shadow-sm overflow-hidden border border-border">
@@ -128,13 +128,13 @@ const Statuses = () => {
             <table className="w-full">
               <thead>
                 <tr className="bg-muted border-b-2 border-border">
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Order</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Title</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Orden</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Titulo</th>
                   <th className="px-4 py-4 text-left font-semibold text-foreground">Color</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Active</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Auto Close</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Type</th>
-                  <th className="px-4 py-4 text-left font-semibold text-foreground">Actions</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Activo</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Cierre automatico</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Tipo</th>
+                  <th className="px-4 py-4 text-left font-semibold text-foreground">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -164,11 +164,11 @@ const Statuses = () => {
                           ? 'bg-chart-1/20 text-chart-1'
                           : 'bg-muted text-muted-foreground'
                       }`}>
-                        {status.includeInActive ? 'Yes' : 'No'}
+                        {status.includeInActive ? 'Si' : 'No'}
                       </span>
                     </td>
                     <td className="px-4 py-4 text-muted-foreground">
-                      {status.autoClose ? `${status.autoCloseAfterDays} days` : 'No'}
+                      {status.autoClose ? `${status.autoCloseAfterDays} dias` : 'No'}
                     </td>
                     <td className="px-4 py-4">
                       {status.isSystem && (
@@ -188,7 +188,7 @@ const Statuses = () => {
                               ? 'text-muted-foreground cursor-not-allowed'
                               : 'text-primary hover:bg-primary/10'
                           }`}
-                          title={status.isSystem ? 'Cannot edit system status' : 'Edit'}
+                          title={status.isSystem ? 'No se puede editar un estado del sistema' : 'Editar'}
                         >
                           <Edit2 size={18} />
                         </button>
@@ -200,7 +200,7 @@ const Statuses = () => {
                               ? 'text-muted-foreground cursor-not-allowed'
                               : 'text-destructive hover:bg-destructive/10'
                           }`}
-                          title={status.isSystem ? 'Cannot delete system status' : 'Delete'}
+                          title={status.isSystem ? 'No se puede eliminar un estado del sistema' : 'Eliminar'}
                         >
                           <Trash2 size={18} />
                         </button>
@@ -219,14 +219,14 @@ const Statuses = () => {
           <div className="bg-card rounded-lg shadow-xl max-w-md w-full border border-border">
             <div className="p-6 border-b border-border">
               <h2 className="text-2xl font-bold text-foreground">
-                {editingStatus ? 'Edit Status' : 'Add Status'}
+                {editingStatus ? 'Editar estado' : 'Agregar estado'}
               </h2>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Title *
+                  Titulo *
                 </label>
                 <input
                   type="text"
@@ -262,7 +262,7 @@ const Statuses = () => {
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Order
+                  Orden
                 </label>
                 <input
                   type="number"
@@ -282,7 +282,7 @@ const Statuses = () => {
                   className="w-4 h-4 text-primary border-border rounded focus:ring-2 focus:ring-primary/20"
                 />
                 <label htmlFor="includeInActive" className="text-sm text-foreground">
-                  Include in active tickets
+                  Incluir en solicitudes activas
                 </label>
               </div>
 
@@ -295,14 +295,14 @@ const Statuses = () => {
                   className="w-4 h-4 text-primary border-border rounded focus:ring-2 focus:ring-primary/20"
                 />
                 <label htmlFor="autoClose" className="text-sm text-foreground">
-                  Auto-close tickets
+                  Cerrar solicitudes automaticamente
                 </label>
               </div>
 
               {formData.autoClose && (
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    Auto-close after (days)
+                    Cerrar automaticamente despues de (dias)
                   </label>
                   <input
                     type="number"
@@ -319,14 +319,14 @@ const Statuses = () => {
                   type="submit"
                   className="flex-1 px-4 py-2 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 transition-all"
                 >
-                  {editingStatus ? 'Update' : 'Create'}
+                  {editingStatus ? 'Actualizar' : 'Crear'}
                 </button>
                 <button
                   type="button"
                   onClick={handleCloseModal}
                   className="flex-1 px-4 py-2 bg-muted text-foreground rounded-md font-semibold hover:bg-muted/80 transition-all"
                 >
-                  Cancel
+                  Cancelar
                 </button>
               </div>
             </form>

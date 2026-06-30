@@ -43,11 +43,11 @@ const SurveySubmit = () => {
       if (response.data.status === 'completed') {
         setSubmitted(true);
       } else if (response.data.status === 'expired') {
-        setError('This survey has expired');
+        setError('Esta encuesta ha expirado');
       }
     } catch (error) {
       console.error('Error fetching survey:', error);
-      setError(error.response?.data?.message || 'Survey not found');
+      setError(error.response?.data?.message || 'No se encontro la encuesta');
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ const SurveySubmit = () => {
     e.preventDefault();
 
     if (ratings.overall === 0) {
-      alert('Please provide an overall rating');
+      alert('Proporciona una calificacion general');
       return;
     }
 
@@ -82,7 +82,7 @@ const SurveySubmit = () => {
       setSubmitted(true);
     } catch (error) {
       console.error('Error submitting survey:', error);
-      alert(error.response?.data?.message || 'Error submitting survey');
+      alert(error.response?.data?.message || 'Error al enviar la encuesta');
     } finally {
       setSubmitting(false);
     }
@@ -118,7 +118,7 @@ const SurveySubmit = () => {
             </button>
           ))}
           <span className="ml-3 text-sm text-gray-600 self-center">
-            {currentRating > 0 ? `${currentRating} / 5` : 'Not rated'}
+            {currentRating > 0 ? `${currentRating} / 5` : 'Sin calificar'}
           </span>
         </div>
       </div>
@@ -129,7 +129,7 @@ const SurveySubmit = () => {
     return (
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          How likely are you to recommend our service to a friend or colleague?
+          Que tan probable es que recomiendes nuestro servicio a un amigo o colega?
         </label>
         <div className="flex gap-1 flex-wrap">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((score) => (
@@ -152,8 +152,8 @@ const SurveySubmit = () => {
           ))}
         </div>
         <div className="flex justify-between text-xs text-gray-500 mt-2">
-          <span>Not at all likely</span>
-          <span>Extremely likely</span>
+          <span>Nada probable</span>
+          <span>Muy probable</span>
         </div>
       </div>
     );
@@ -164,7 +164,7 @@ const SurveySubmit = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading survey...</p>
+          <p className="mt-4 text-gray-600">Cargando encuesta...</p>
         </div>
       </div>
     );
@@ -175,7 +175,7 @@ const SurveySubmit = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <XCircle size={64} className="text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Survey Not Available</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Encuesta no disponible</h2>
           <p className="text-gray-600">{error}</p>
         </div>
       </div>
@@ -187,14 +187,14 @@ const SurveySubmit = () => {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
           <CheckCircle size={64} className="text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Gracias!</h2>
           <p className="text-gray-600 mb-6">
-            Your feedback has been submitted successfully. We appreciate you taking the time to
-            help us improve our service.
+            Tu opinion se envio correctamente. Agradecemos que hayas dedicado tiempo para
+            ayudarnos a mejorar nuestro servicio.
           </p>
           <div className="bg-blue-50 rounded-lg p-4">
             <p className="text-sm text-blue-800">
-              Your input helps us provide better support to all our customers.
+              Tu aporte nos ayuda a brindar mejor soporte a todos nuestros clientes.
             </p>
           </div>
         </div>
@@ -208,9 +208,9 @@ const SurveySubmit = () => {
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           {}
           <div className="bg-linear-to-r from-blue-600 to-blue-700 px-8 py-6 text-white">
-            <h1 className="text-3xl font-bold mb-2">Customer Satisfaction Survey</h1>
+            <h1 className="text-3xl font-bold mb-2">Encuesta de satisfaccion del cliente</h1>
             <p className="text-blue-100">
-              Help us improve by sharing your experience with ticket #{survey?.ticket?.ticketNumber}
+              Ayudanos a mejorar compartiendo tu experiencia con la solicitud #{survey?.ticket?.ticketNumber}
             </p>
           </div>
 
@@ -218,26 +218,26 @@ const SurveySubmit = () => {
           <form onSubmit={handleSubmit} className="p-8">
             {}
             <div className="bg-gray-50 rounded-lg p-4 mb-8">
-              <h3 className="font-semibold text-gray-900 mb-2">Ticket Details</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Detalles de la solicitud</h3>
               <p className="text-sm text-gray-600">
-                <span className="font-medium">Ticket:</span> #{survey?.ticket?.ticketNumber}
+                <span className="font-medium">Solicitud:</span> #{survey?.ticket?.ticketNumber}
               </p>
               <p className="text-sm text-gray-600">
-                <span className="font-medium">Title:</span> {survey?.ticket?.title}
+                <span className="font-medium">Titulo:</span> {survey?.ticket?.title}
               </p>
               <p className="text-sm text-gray-600">
-                <span className="font-medium">Agent:</span> {survey?.agent?.name}
+                <span className="font-medium">Agente:</span> {survey?.agent?.name}
               </p>
             </div>
 
             {}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Rate Your Experience</h3>
-              {renderStars('overall', 'Overall Satisfaction')}
-              {renderStars('responseTime', 'Response Time')}
-              {renderStars('professionalism', 'Professionalism')}
-              {renderStars('knowledgeability', 'Knowledge & Expertise')}
-              {renderStars('problemResolution', 'Problem Resolution')}
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Califica tu experiencia</h3>
+              {renderStars('overall', 'Satisfaccion general')}
+              {renderStars('responseTime', 'Tiempo de respuesta')}
+              {renderStars('professionalism', 'Profesionalismo')}
+              {renderStars('knowledgeability', 'Conocimiento y experiencia')}
+              {renderStars('problemResolution', 'Resolucion del problema')}
             </div>
 
             {}
@@ -248,46 +248,46 @@ const SurveySubmit = () => {
 
             {}
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Feedback</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Comentarios adicionales</h3>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <ThumbsUp size={16} className="inline mr-1" />
-                  What did we do well?
+                  Que hicimos bien?
                 </label>
                 <textarea
                   value={feedback.positive}
                   onChange={(e) => setFeedback({ ...feedback, positive: e.target.value })}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Tell us what you liked..."
+                  placeholder="Cuentanos que te gusto..."
                 />
               </div>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <ThumbsDown size={16} className="inline mr-1" />
-                  What could we improve?
+                  Que podriamos mejorar?
                 </label>
                 <textarea
                   value={feedback.improvement}
                   onChange={(e) => setFeedback({ ...feedback, improvement: e.target.value })}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Tell us how we can improve..."
+                  placeholder="Cuentanos como podemos mejorar..."
                 />
               </div>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Any other comments?
+                  Algun otro comentario?
                 </label>
                 <textarea
                   value={feedback.general}
                   onChange={(e) => setFeedback({ ...feedback, general: e.target.value })}
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Additional feedback..."
+                  placeholder="Comentarios adicionales..."
                 />
               </div>
             </div>
@@ -300,7 +300,7 @@ const SurveySubmit = () => {
                 className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <Send size={20} />
-                {submitting ? 'Submitting...' : 'Submit Survey'}
+                {submitting ? 'Enviando...' : 'Enviar encuesta'}
               </button>
             </div>
 
@@ -308,7 +308,7 @@ const SurveySubmit = () => {
             <div className="mt-6 flex items-center gap-2 text-sm text-gray-500">
               <Clock size={16} />
               <span>
-                This survey expires on {new Date(survey?.expiresAt).toLocaleDateString()}
+                Esta encuesta expira el {new Date(survey?.expiresAt).toLocaleDateString()}
               </span>
             </div>
           </form>
@@ -316,7 +316,7 @@ const SurveySubmit = () => {
 
         {}
         <div className="text-center mt-8 text-sm text-gray-500">
-          <p>Your feedback is confidential and helps us improve our service.</p>
+          <p>Tu opinion es confidencial y nos ayuda a mejorar nuestro servicio.</p>
         </div>
       </div>
     </div>

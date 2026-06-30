@@ -81,12 +81,12 @@ const TicketList = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Tickets</h1>
+        <h1 className="text-3xl font-bold text-foreground">Solicitudes</h1>
         <Link
           to="/tickets/new"
           className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 hover:-translate-y-0.5 transition-all shadow-sm"
         >
-          Create Ticket
+          Crear solicitud
         </Link>
       </div>
 
@@ -95,7 +95,7 @@ const TicketList = () => {
           <Search size={20} className="text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search tickets..."
+            placeholder="Buscar solicitudes..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="flex-1 border-none outline-none text-base bg-transparent text-foreground placeholder:text-muted-foreground"
@@ -109,7 +109,7 @@ const TicketList = () => {
               onChange={(e) => setFilters({ ...filters, status: e.target.value })}
               className="appearance-none px-4 py-2 pr-10 border-2 border-border rounded-md text-sm cursor-pointer bg-background text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             >
-              <option value="">All Statuses</option>
+              <option value="">Todos los estados</option>
               {statuses.map((status) => (
                 <option key={status._id} value={status._id}>
                   {status.title}
@@ -129,11 +129,11 @@ const TicketList = () => {
               onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
               className="appearance-none px-4 py-2 pr-10 border-2 border-border rounded-md text-sm cursor-pointer bg-background text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             >
-              <option value="">All Priorities</option>
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
+              <option value="">Todas las prioridades</option>
+              <option value="Low">Baja</option>
+              <option value="Medium">Media</option>
+              <option value="High">Alta</option>
+              <option value="Critical">Critica</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ const TicketList = () => {
               onChange={(e) => setFilters({ ...filters, department: e.target.value })}
               className="appearance-none px-4 py-2 pr-10 border-2 border-border rounded-md text-sm cursor-pointer bg-background text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
             >
-              <option value="">All Departments</option>
+              <option value="">Todos los departamentos</option>
               {departments.map((dept) => (
                 <option key={dept._id} value={dept._id}>
                   {dept.name}
@@ -166,7 +166,7 @@ const TicketList = () => {
 
       {loading ? (
         <div className="flex items-center justify-center min-h-[400px] text-lg text-muted-foreground">
-          Loading tickets...
+          Cargando solicitudes...
         </div>
       ) : (
         <>
@@ -175,12 +175,12 @@ const TicketList = () => {
               <table className="w-full">
                 <thead>
                   <tr className="bg-muted border-b-2 border-border">
-                    <th className="px-4 py-4 text-left font-semibold text-foreground">Ticket #</th>
-                    <th className="px-4 py-4 text-left font-semibold text-foreground">Title</th>
-                    <th className="px-4 py-4 text-left font-semibold text-foreground">Status</th>
-                    <th className="px-4 py-4 text-left font-semibold text-foreground">Priority</th>
-                    <th className="px-4 py-4 text-left font-semibold text-foreground">Department</th>
-                    <th className="px-4 py-4 text-left font-semibold text-foreground">Created</th>
+                    <th className="px-4 py-4 text-left font-semibold text-foreground">Solicitud #</th>
+                    <th className="px-4 py-4 text-left font-semibold text-foreground">Titulo</th>
+                    <th className="px-4 py-4 text-left font-semibold text-foreground">Estado</th>
+                    <th className="px-4 py-4 text-left font-semibold text-foreground">Prioridad</th>
+                    <th className="px-4 py-4 text-left font-semibold text-foreground">Departamento</th>
+                    <th className="px-4 py-4 text-left font-semibold text-foreground">Creado</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -75,7 +75,7 @@ const AdvancedAnalytics = () => {
       setAnalytics(data.data);
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
-      toast.error('Failed to load analytics');
+      toast.error('No se pudo cargar la analitica');
     } finally {
       setLoading(false);
     }
@@ -132,7 +132,7 @@ const AdvancedAnalytics = () => {
         link.remove();
       }
 
-      toast.success(`Exported successfully as ${format.toUpperCase()}`);
+      toast.success(`Exportado correctamente como ${format.toUpperCase()}`);
     } catch (error) {
       console.error('Export failed:', error);
       toast.error('Failed to export data');
@@ -144,14 +144,15 @@ const AdvancedAnalytics = () => {
   if (loading && !analytics) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-lg text-muted-foreground">Loading analytics...</div>
+        <div className="text-lg text-muted-foreground">Cargando analitica...</div>
       </div>
     );
   }
 
   if (!analytics) return null;
 
-  const { overview, priorityBreakdown, statusBreakdown, ticketsOverTime } = analytics;
+  const { overview, priorityBreakdown, statusBreakdown, ticketsOverTime } = analytics;
+
   const priorityData = Object.entries(priorityBreakdown).map(([name, value]) => ({
     name,
     value,
@@ -160,7 +161,8 @@ const AdvancedAnalytics = () => {
   const statusData = Object.entries(statusBreakdown).map(([name, value]) => ({
     name,
     value,
-  }));
+  }));
+
   const combinedTimeData = [
     ...ticketsOverTime.map(item => ({
       date: new Date(item._id).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
@@ -178,7 +180,7 @@ const AdvancedAnalytics = () => {
     <div>
       {}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Advanced Analytics</h1>
+        <h1 className="text-3xl font-bold text-foreground">Analitica avanzada</h1>
 
         <div className="flex flex-wrap gap-3">
           {}
@@ -190,7 +192,7 @@ const AdvancedAnalytics = () => {
               onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
               className="px-3 py-2 border-2 border-border rounded-md bg-background text-foreground text-sm"
             />
-            <span className="text-muted-foreground">to</span>
+            <span className="text-muted-foreground">a</span>
             <input
               type="date"
               value={dateRange.endDate}
@@ -205,7 +207,7 @@ const AdvancedAnalytics = () => {
             onChange={(e) => setSelectedDepartment(e.target.value)}
             className="px-4 py-2 border-2 border-border rounded-md bg-background text-foreground"
           >
-            <option value="">All Departments</option>
+            <option value="">Todos los departamentos</option>
             {departments.map((dept) => (
               <option key={dept._id} value={dept._id}>
                 {dept.name}
@@ -223,7 +225,7 @@ const AdvancedAnalytics = () => {
             }`}
           >
             <RefreshCw size={16} className={autoRefresh ? 'animate-spin' : ''} />
-            Auto Refresh
+            Actualizacion automatica
           </button>
 
           {}
@@ -233,7 +235,7 @@ const AdvancedAnalytics = () => {
               className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90 disabled:opacity-50 transition-all"
             >
               <Download size={16} />
-              Export
+              Exportar
             </button>
             <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
               <button
@@ -242,7 +244,7 @@ const AdvancedAnalytics = () => {
                 className="w-full flex items-center gap-2 px-4 py-3 hover:bg-accent text-left transition-colors"
               >
                 <FileSpreadsheet size={16} />
-                Export as CSV
+                Exportar como CSV
               </button>
               <button
                 onClick={() => handleExport('json')}
@@ -250,7 +252,7 @@ const AdvancedAnalytics = () => {
                 className="w-full flex items-center gap-2 px-4 py-3 hover:bg-accent text-left transition-colors"
               >
                 <FileText size={16} />
-                Export as JSON
+                Exportar como JSON
               </button>
             </div>
           </div>
@@ -263,16 +265,16 @@ const AdvancedAnalytics = () => {
           <div className="flex items-start gap-4">
             <Sparkles size={24} className="text-primary mt-1" />
             <div className="flex-1">
-              <h3 className="text-lg font-bold text-foreground mb-2">Predictive Insights</h3>
+              <h3 className="text-lg font-bold text-foreground mb-2">Insights predictivos</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">Expected Daily Average</p>
+                  <p className="text-sm text-muted-foreground">Promedio diario esperado</p>
                   <p className="text-2xl font-bold text-foreground">
                     {predictions.insights.avgTicketsPerDay} tickets
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Trend</p>
+                  <p className="text-sm text-muted-foreground">Tendencia</p>
                   <div className="flex items-center gap-2">
                     {predictions.insights.trend === 'increasing' ? (
                       <TrendingUp className="text-destructive" size={20} />
@@ -291,7 +293,7 @@ const AdvancedAnalytics = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Last 90 Days Total</p>
+                  <p className="text-sm text-muted-foreground">Total de los ultimos 90 dias</p>
                   <p className="text-2xl font-bold text-foreground">
                     {predictions.insights.totalLast90Days} tickets
                   </p>
@@ -307,7 +309,7 @@ const AdvancedAnalytics = () => {
         {}
         <div className="lg:col-span-2 bg-card p-6 rounded-lg shadow-sm border border-border">
           <h2 className="text-xl font-bold text-foreground mb-4">
-            Tickets Timeline & 7-Day Forecast
+            Cronologia de solicitudes y pronostico de 7 dias
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={combinedTimeData}>
@@ -328,7 +330,7 @@ const AdvancedAnalytics = () => {
                 stroke="hsl(var(--primary))"
                 fill="hsl(var(--primary))"
                 fillOpacity={0.6}
-                name="Actual Tickets"
+                name="Solicitudes reales"
               />
               <Area
                 type="monotone"
@@ -337,7 +339,7 @@ const AdvancedAnalytics = () => {
                 fill="hsl(var(--chart-3))"
                 fillOpacity={0.3}
                 strokeDasharray="5 5"
-                name="Predicted Tickets"
+                name="Solicitudes previstas"
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -345,7 +347,7 @@ const AdvancedAnalytics = () => {
 
         {}
         <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-          <h2 className="text-xl font-bold text-foreground mb-4">Priority Distribution</h2>
+          <h2 className="text-xl font-bold text-foreground mb-4">Distribucion por prioridad</h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -375,7 +377,7 @@ const AdvancedAnalytics = () => {
 
         {}
         <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-          <h2 className="text-xl font-bold text-foreground mb-4">Status Distribution</h2>
+          <h2 className="text-xl font-bold text-foreground mb-4">Distribucion por estado</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={statusData}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
@@ -397,23 +399,23 @@ const AdvancedAnalytics = () => {
       {}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-          <p className="text-sm text-muted-foreground mb-2">Total Tickets</p>
+          <p className="text-sm text-muted-foreground mb-2">Total de solicitudes</p>
           <p className="text-3xl font-bold text-foreground">{overview.totalTickets}</p>
         </div>
         <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-          <p className="text-sm text-muted-foreground mb-2">Open Tickets</p>
+          <p className="text-sm text-muted-foreground mb-2">Solicitudes abiertas</p>
           <p className="text-3xl font-bold text-chart-3">{overview.openTickets}</p>
         </div>
         <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-          <p className="text-sm text-muted-foreground mb-2">Closed Tickets</p>
+          <p className="text-sm text-muted-foreground mb-2">Solicitudes cerradas</p>
           <p className="text-3xl font-bold text-chart-1">{overview.closedTickets}</p>
         </div>
         <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-          <p className="text-sm text-muted-foreground mb-2">Avg Response</p>
+          <p className="text-sm text-muted-foreground mb-2">Respuesta promedio</p>
           <p className="text-3xl font-bold text-foreground">{overview.avgResponseTime}m</p>
         </div>
         <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
-          <p className="text-sm text-muted-foreground mb-2">Avg Resolution</p>
+          <p className="text-sm text-muted-foreground mb-2">Resolucion promedio</p>
           <p className="text-3xl font-bold text-foreground">{overview.avgResolutionTime}h</p>
         </div>
       </div>

@@ -100,22 +100,22 @@ const Surveys = () => {
   };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
+    return <div className="flex justify-center items-center h-64">Cargando...</div>;
   }
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Customer Satisfaction Surveys</h1>
-          <p className="text-gray-600 mt-1">Track and analyze customer feedback</p>
+          <h1 className="text-2xl font-bold text-gray-900">Encuestas de satisfaccion del cliente</h1>
+          <p className="text-gray-600 mt-1">Seguimiento y analisis de la opinion del cliente</p>
         </div>
         <button
           onClick={() => setShowFilters(!showFilters)}
           className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
         >
           <Filter size={20} />
-          Filters
+          Filtros
         </button>
       </div>
 
@@ -124,14 +124,14 @@ const Surveys = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600">Total Surveys</h3>
+              <h3 className="text-sm font-medium text-gray-600">Total de encuestas</h3>
             </div>
             <p className="text-3xl font-bold text-gray-900">{analytics.totalSurveys}</p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600">Average Rating</h3>
+              <h3 className="text-sm font-medium text-gray-600">Calificacion promedio</h3>
             </div>
             <div className="flex items-center gap-2">
               <p className="text-3xl font-bold text-gray-900">
@@ -143,7 +143,7 @@ const Surveys = () => {
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600">NPS Score</h3>
+              <h3 className="text-sm font-medium text-gray-600">Puntaje NPS</h3>
             </div>
             <p
               className={`text-3xl font-bold ${
@@ -157,20 +157,20 @@ const Surveys = () => {
               {analytics.nps?.score || 0}
             </p>
             <p className="text-xs text-gray-500 mt-1">
-              {analytics.nps?.promoters || 0} promoters, {analytics.nps?.detractors || 0} detractors
+              {analytics.nps?.promoters || 0} promotores, {analytics.nps?.detractors || 0} detractores
             </p>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-600">5-Star Ratings</h3>
+              <h3 className="text-sm font-medium text-gray-600">Calificaciones de 5 estrellas</h3>
             </div>
             <p className="text-3xl font-bold text-gray-900">{analytics.ratingDistribution?.[5] || 0}</p>
             <p className="text-xs text-gray-500 mt-1">
               {analytics.totalSurveys > 0
                 ? Math.round(((analytics.ratingDistribution?.[5] || 0) / analytics.totalSurveys) * 100)
                 : 0}
-              % of total
+              % del total
             </p>
           </div>
         </div>
@@ -181,21 +181,21 @@ const Surveys = () => {
         <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
               <select
                 value={filters.status}
                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="">All</option>
-                <option value="completed">Completed</option>
-                <option value="pending">Pending</option>
-                <option value="expired">Expired</option>
+                <option value="">Todos</option>
+                <option value="completed">Completado</option>
+                <option value="pending">Pendiente</option>
+                <option value="expired">Expirado</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de inicio</label>
               <input
                 type="date"
                 value={filters.startDate}
@@ -205,7 +205,7 @@ const Surveys = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de fin</label>
               <input
                 type="date"
                 value={filters.endDate}
@@ -224,25 +224,25 @@ const Surveys = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ticket
+                  Solicitud
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Customer
+                  Cliente
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Agent
+                  Agente
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rating
+                  Calificacion
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   NPS
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
+                  Fecha
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  Acciones
                 </th>
               </tr>
             </thead>
@@ -287,7 +287,7 @@ const Surveys = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {survey.completedAt
                       ? new Date(survey.completedAt).toLocaleDateString()
-                      : 'Pending'}
+                      : 'Pendiente'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button
@@ -305,7 +305,7 @@ const Surveys = () => {
 
         {surveys.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500">No surveys found</p>
+            <p className="text-gray-500">No se encontraron encuestas</p>
           </div>
         )}
       </div>
@@ -316,7 +316,7 @@ const Surveys = () => {
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-start mb-6">
-                <h2 className="text-xl font-bold">Survey Details</h2>
+                <h2 className="text-xl font-bold">Detalles de la encuesta</h2>
                 <button
                   onClick={() => setShowDetailModal(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -328,27 +328,27 @@ const Surveys = () => {
               <div className="space-y-6">
                 {}
                 <div>
-                  <h3 className="font-semibold mb-2">Ticket Information</h3>
+                  <h3 className="font-semibold mb-2">Informacion de la solicitud</h3>
                   <div className="bg-gray-50 rounded-lg p-4 space-y-1 text-sm">
                     <p>
-                      <span className="font-medium">Ticket:</span> #
+                      <span className="font-medium">Solicitud:</span> #
                       {selectedSurvey.ticket?.ticketNumber}
                     </p>
                     <p>
-                      <span className="font-medium">Customer:</span> {selectedSurvey.customer?.name}
+                      <span className="font-medium">Cliente:</span> {selectedSurvey.customer?.name}
                     </p>
                     <p>
-                      <span className="font-medium">Agent:</span> {selectedSurvey.agent?.name}
+                      <span className="font-medium">Agente:</span> {selectedSurvey.agent?.name}
                     </p>
                   </div>
                 </div>
 
                 {}
                 <div>
-                  <h3 className="font-semibold mb-2">Ratings</h3>
+                  <h3 className="font-semibold mb-2">Calificaciones</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm">Overall:</span>
+                        <span className="text-sm">General:</span>
                       <div className="flex items-center gap-2">
                         {renderStars(selectedSurvey.ratings.overall)}
                         <span className="font-semibold">{selectedSurvey.ratings.overall}/5</span>
@@ -356,7 +356,7 @@ const Surveys = () => {
                     </div>
                     {selectedSurvey.ratings.responseTime && (
                       <div className="flex justify-between items-center">
-                        <span className="text-sm">Response Time:</span>
+                        <span className="text-sm">Tiempo de respuesta:</span>
                         <div className="flex items-center gap-2">
                           {renderStars(selectedSurvey.ratings.responseTime)}
                           <span className="font-semibold">
@@ -367,7 +367,7 @@ const Surveys = () => {
                     )}
                     {selectedSurvey.ratings.professionalism && (
                       <div className="flex justify-between items-center">
-                        <span className="text-sm">Professionalism:</span>
+                        <span className="text-sm">Profesionalismo:</span>
                         <div className="flex items-center gap-2">
                           {renderStars(selectedSurvey.ratings.professionalism)}
                           <span className="font-semibold">
@@ -400,12 +400,12 @@ const Surveys = () => {
                   selectedSurvey.feedback?.improvement ||
                   selectedSurvey.feedback?.general) && (
                   <div>
-                    <h3 className="font-semibold mb-2">Feedback</h3>
+                    <h3 className="font-semibold mb-2">Comentarios</h3>
                     <div className="space-y-3">
                       {selectedSurvey.feedback.positive && (
                         <div className="bg-green-50 rounded-lg p-3">
                           <p className="text-sm font-medium text-green-800 mb-1">
-                            What we did well:
+                            Lo que hicimos bien:
                           </p>
                           <p className="text-sm text-green-700">{selectedSurvey.feedback.positive}</p>
                         </div>
@@ -413,7 +413,7 @@ const Surveys = () => {
                       {selectedSurvey.feedback.improvement && (
                         <div className="bg-yellow-50 rounded-lg p-3">
                           <p className="text-sm font-medium text-yellow-800 mb-1">
-                            Areas for improvement:
+                            Areas de mejora:
                           </p>
                           <p className="text-sm text-yellow-700">
                             {selectedSurvey.feedback.improvement}
@@ -423,7 +423,7 @@ const Surveys = () => {
                       {selectedSurvey.feedback.general && (
                         <div className="bg-blue-50 rounded-lg p-3">
                           <p className="text-sm font-medium text-blue-800 mb-1">
-                            Additional comments:
+                            Comentarios adicionales:
                           </p>
                           <p className="text-sm text-blue-700">{selectedSurvey.feedback.general}</p>
                         </div>
@@ -438,7 +438,7 @@ const Surveys = () => {
                   onClick={() => setShowDetailModal(false)}
                   className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
                 >
-                  Close
+                  Cerrar
                 </button>
               </div>
             </div>

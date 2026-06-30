@@ -25,7 +25,8 @@ const CreateTicket = () => {
   });
 
   useEffect(() => {
-    fetchDepartments();
+    fetchDepartments();
+
     if (location.state?.template) {
       handleTemplateSelect(location.state.template);
     }
@@ -37,7 +38,7 @@ const CreateTicket = () => {
       setDepartments(data.data || []);
     } catch (error) {
       console.error('Failed to fetch departments:', error);
-      toast.error('Failed to load departments');
+      toast.error('No se pudieron cargar los departamentos');
     }
   };
 
@@ -58,22 +59,22 @@ const CreateTicket = () => {
       tags: template.tags?.join(', ') || '',
     });
     setShowTemplatePicker(false);
-    toast.success(`Template "${template.name}" applied`);
+    toast.success(`Plantilla "${template.name}" aplicada`);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.title.trim()) {
-      toast.error('Title is required');
+      toast.error('El titulo es obligatorio');
       return;
     }
     if (!formData.description.trim()) {
-      toast.error('Description is required');
+      toast.error('La descripcion es obligatoria');
       return;
     }
     if (!formData.department) {
-      toast.error('Department is required');
+      toast.error('El departamento es obligatorio');
       return;
     }
 
@@ -86,11 +87,12 @@ const CreateTicket = () => {
 
       const response = await ticketService.createTicket(ticketData);
       setCreatedTicketId(response.data._id);
-      toast.success('Ticket created successfully!');
+      toast.success('Solicitud creada correctamente');
+
       setShowFileUpload(true);
     } catch (error) {
       console.error('Failed to create ticket:', error);
-      toast.error(error.response?.data?.message || 'Failed to create ticket');
+      toast.error(error.response?.data?.message || 'No se pudo crear la solicitud');
       setLoading(false);
     }
   };
@@ -107,10 +109,10 @@ const CreateTicket = () => {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Create New Ticket</h1>
+          <h1 className="text-3xl font-bold text-foreground">Crear nueva solicitud</h1>
           {selectedTemplate && (
             <p className="text-sm text-muted-foreground mt-1">
-              Using template: <span className="font-medium">{selectedTemplate.name}</span>
+              Usando plantilla: <span className="font-medium">{selectedTemplate.name}</span>
             </p>
           )}
         </div>
@@ -121,14 +123,14 @@ const CreateTicket = () => {
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <FileText size={20} />
-            Use Template
+            Usar plantilla
           </button>
           <button
             onClick={() => navigate('/tickets')}
             className="flex items-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft size={20} />
-            Back to Tickets
+            Volver a solicitudes
           </button>
         </div>
       </div>
@@ -139,7 +141,7 @@ const CreateTicket = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="lg:col-span-2">
               <label htmlFor="title" className="block text-sm font-semibold text-foreground mb-2">
-                Title <span className="text-destructive">*</span>
+                Titulo <span className="text-destructive">*</span>
               </label>
               <input
                 type="text"
@@ -148,14 +150,14 @@ const CreateTicket = () => {
                 value={formData.title}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border-2 border-border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground"
-                placeholder="Brief description of the issue"
+                placeholder="Breve descripcion del problema"
                 required
               />
             </div>
 
             <div className="lg:col-span-2">
               <label htmlFor="description" className="block text-sm font-semibold text-foreground mb-2">
-                Description <span className="text-destructive">*</span>
+                Descripcion <span className="text-destructive">*</span>
               </label>
               <textarea
                 id="description"
@@ -164,14 +166,14 @@ const CreateTicket = () => {
                 onChange={handleChange}
                 rows={6}
                 className="w-full px-4 py-3 border-2 border-border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground resize-none"
-                placeholder="Detailed description of the issue..."
+                placeholder="Descripcion detallada del problema..."
                 required
               />
             </div>
 
             <div>
               <label htmlFor="priority" className="block text-sm font-semibold text-foreground mb-2">
-                Priority <span className="text-destructive">*</span>
+                Prioridad <span className="text-destructive">*</span>
               </label>
               <select
                 id="priority"
@@ -181,16 +183,16 @@ const CreateTicket = () => {
                 className="w-full px-4 py-3 border-2 border-border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground cursor-pointer"
                 required
               >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-                <option value="Critical">Critical</option>
+                <option value="Low">Baja</option>
+                <option value="Medium">Media</option>
+                <option value="High">Alta</option>
+                <option value="Critical">Critica</option>
               </select>
             </div>
 
             <div>
               <label htmlFor="department" className="block text-sm font-semibold text-foreground mb-2">
-                Department <span className="text-destructive">*</span>
+                Departamento <span className="text-destructive">*</span>
               </label>
               <select
                 id="department"
@@ -200,7 +202,7 @@ const CreateTicket = () => {
                 className="w-full px-4 py-3 border-2 border-border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground cursor-pointer"
                 required
               >
-                <option value="">Select Department</option>
+                <option value="">Selecciona un departamento</option>
                 {departments.map((dept) => (
                   <option key={dept._id} value={dept._id}>
                     {dept.name}
@@ -211,7 +213,7 @@ const CreateTicket = () => {
 
             <div className="lg:col-span-2">
               <label htmlFor="tags" className="block text-sm font-semibold text-foreground mb-2">
-                Tags (optional)
+                Etiquetas (opcional)
               </label>
               <input
                 type="text"
@@ -220,10 +222,10 @@ const CreateTicket = () => {
                 value={formData.tags}
                 onChange={handleChange}
                 className="w-full px-4 py-3 border-2 border-border rounded-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-background text-foreground"
-                placeholder="Separate tags with commas (e.g., bug, urgent, login)"
+                placeholder="Separa etiquetas con comas (ej., bug, urgente, acceso)"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Separate multiple tags with commas
+                Separa varias etiquetas con comas
               </p>
             </div>
           </div>
@@ -234,14 +236,14 @@ const CreateTicket = () => {
               disabled={loading}
               className="px-6 py-3 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
             >
-              {loading ? 'Creating...' : 'Create Ticket'}
+              {loading ? 'Creando...' : 'Crear solicitud'}
             </button>
             <button
               type="button"
               onClick={() => navigate('/tickets')}
               className="px-6 py-3 bg-muted text-foreground rounded-md font-semibold hover:bg-muted/80 transition-all"
             >
-              Cancel
+              Cancelar
             </button>
           </div>
         </form>
@@ -252,10 +254,10 @@ const CreateTicket = () => {
                 <Paperclip size={32} className="text-primary" />
               </div>
               <h2 className="text-2xl font-bold text-foreground mb-2">
-                Add Attachments (Optional)
+                Agregar archivos adjuntos (opcional)
               </h2>
               <p className="text-muted-foreground">
-                Upload screenshots, logs, or documents to help us resolve your issue faster
+                Sube capturas, registros o documentos para ayudarnos a resolver tu problema mas rapido
               </p>
             </div>
 
@@ -269,13 +271,13 @@ const CreateTicket = () => {
                 onClick={handleFilesUploaded}
                 className="flex-1 px-6 py-3 bg-primary text-primary-foreground rounded-md font-semibold hover:opacity-90 transition-all"
               >
-                Continue to Ticket
+                Continuar a la solicitud
               </button>
               <button
                 onClick={handleSkipFiles}
                 className="px-6 py-3 bg-muted text-foreground rounded-md font-semibold hover:bg-muted/80 transition-all"
               >
-                Skip
+                Omitir
               </button>
             </div>
           </div>

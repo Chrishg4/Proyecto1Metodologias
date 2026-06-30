@@ -18,10 +18,10 @@ const Login = () => {
 
     try {
       await login(email, password);
-      toast.success('Login successful!');
+      toast.success('Inicio de sesion exitoso');
       navigate('/');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      toast.error(error.response?.data?.message || 'Error al iniciar sesion');
     } finally {
       setLoading(false);
     }
@@ -34,7 +34,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex">
       {}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-primary via-primary/90 to-chart-2 p-12 flex-col justify-between relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-primary via-primary/90 to-chart-2 p-12 flex-col justify-between relative overflow-hidden">
         {}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
@@ -43,42 +43,42 @@ const Login = () => {
 
         <div className="relative z-10">
           <h1 className="text-4xl font-bold text-white mb-2">Support Desk</h1>
-          <p className="text-primary-foreground/80 text-lg">Streamline your customer support</p>
+          <p className="text-primary-foreground/80 text-lg">Optimiza tu atencion al cliente</p>
         </div>
 
         <div className="relative z-10 space-y-8">
           <div>
             <h2 className="text-3xl font-bold text-white mb-6">
-              Everything you need to manage support tickets
+              Todo lo que necesitas para gestionar solicitudes de soporte
             </h2>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="text-white mt-1 shrink-0" size={24} />
                 <div>
-                  <h3 className="text-white font-semibold text-lg">Real-time Notifications</h3>
-                  <p className="text-primary-foreground/80">Stay updated with instant alerts on ticket changes</p>
+                  <h3 className="text-white font-semibold text-lg">Notificaciones en tiempo real</h3>
+                  <p className="text-primary-foreground/80">Mantente al dia con alertas instantaneas de los cambios</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="text-white mt-1 shrink-0" size={24} />
                 <div>
-                  <h3 className="text-white font-semibold text-lg">Smart Escalation</h3>
-                  <p className="text-primary-foreground/80">Automatic ticket routing based on priority and SLA</p>
+                  <h3 className="text-white font-semibold text-lg">Escalamiento inteligente</h3>
+                  <p className="text-primary-foreground/80">Distribucion automatica de solicitudes segun prioridad y SLA</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="text-white mt-1 shrink-0" size={24} />
                 <div>
-                  <h3 className="text-white font-semibold text-lg">Team Collaboration</h3>
-                  <p className="text-primary-foreground/80">Work together seamlessly with your support team</p>
+                  <h3 className="text-white font-semibold text-lg">Colaboracion de equipo</h3>
+                  <p className="text-primary-foreground/80">Trabaja en conjunto de forma fluida con tu equipo de soporte</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 text-primary-foreground/60 text-sm">
-          © 2025 Support Desk. All rights reserved.
+          <div className="relative z-10 text-primary-foreground/60 text-sm">
+          © 2025 Mesa de Ayuda. Todos los derechos reservados.
         </div>
       </div>
 
@@ -86,8 +86,8 @@ const Login = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
         <div className="w-full max-w-md">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Welcome back</h2>
-            <p className="text-muted-foreground">Sign in to your account to continue</p>
+            <h2 className="text-3xl font-bold text-foreground mb-2">Bienvenido de nuevo</h2>
+            <p className="text-muted-foreground">Inicia sesion en tu cuenta para continuar</p>
           </div>
 
           {}
@@ -113,7 +113,7 @@ const Login = () => {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            Sign in with Google
+            Iniciar con Google
           </button>
 
           <div className="relative mb-6">
@@ -121,14 +121,14 @@ const Login = () => {
               <div className="w-full border-t border-border"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-background text-muted-foreground">Or continue with email</span>
+              <span className="px-4 bg-background text-muted-foreground">O continuar con correo</span>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Email Address
+                Correo electronico
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
@@ -137,7 +137,7 @@ const Login = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="you@example.com"
+                  placeholder="tu@ejemplo.com"
                   className="w-full pl-11 pr-4 py-3 border-2 border-border rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
               </div>
@@ -145,7 +145,7 @@ const Login = () => {
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Password
+                Contrasena
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
@@ -154,7 +154,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="Enter your password"
+                  placeholder="Ingresa tu contrasena"
                   className="w-full pl-11 pr-12 py-3 border-2 border-border rounded-lg text-base bg-background text-foreground transition-colors focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 />
                 <button
@@ -169,7 +169,7 @@ const Login = () => {
 
             <div className="flex items-center justify-end">
               <Link to="/forgot-password" className="text-sm text-primary font-medium hover:underline">
-                Forgot password?
+                Olvidaste tu contrasena?
               </Link>
             </div>
 
@@ -178,15 +178,15 @@ const Login = () => {
               disabled={loading}
               className="w-full py-3.5 bg-primary text-primary-foreground rounded-lg text-base font-semibold transition-all hover:opacity-90 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? 'Ingresando...' : 'Iniciar sesion'}
               {!loading && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
             </button>
           </form>
 
           <p className="text-center mt-8 text-muted-foreground">
-            Don't have an account?{' '}
+            No tienes una cuenta?{' '}
             <Link to="/register" className="text-primary font-semibold hover:underline">
-              Create account
+              Crear cuenta
             </Link>
           </p>
         </div>

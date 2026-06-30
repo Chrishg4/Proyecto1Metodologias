@@ -30,7 +30,7 @@ const FileUpload = ({ ticketId, replyId, onUploadComplete }) => {
   const validateFile = (file) => {
 
     if (file.size > MAX_FILE_SIZE) {
-      toast.error(`${file.name} is too large. Max size is 10MB`);
+      toast.error(`${file.name} es demasiado grande. El tamano maximo es 10MB`);
       return false;
     }
 
@@ -44,7 +44,7 @@ const FileUpload = ({ ticketId, replyId, onUploadComplete }) => {
     ];
 
     if (!allowedTypes.includes(file.type)) {
-      toast.error(`${file.name} type is not allowed`);
+      toast.error(`El tipo de archivo ${file.name} no esta permitido`);
       return false;
     }
 
@@ -55,7 +55,7 @@ const FileUpload = ({ ticketId, replyId, onUploadComplete }) => {
     const validFiles = Array.from(newFiles).filter(validateFile);
 
     if (files.length + validFiles.length > MAX_FILES) {
-      toast.error(`Maximum ${MAX_FILES} files allowed`);
+      toast.error(`Se permiten maximo ${MAX_FILES} archivos`);
       return;
     }
 
@@ -94,7 +94,7 @@ const FileUpload = ({ ticketId, replyId, onUploadComplete }) => {
 
   const handleUpload = async () => {
     if (files.length === 0) {
-      toast.error('Please select files to upload');
+      toast.error('Selecciona archivos para subir');
       return;
     }
 
@@ -115,14 +115,14 @@ const FileUpload = ({ ticketId, replyId, onUploadComplete }) => {
         },
       });
 
-      toast.success(`${files.length} file(s) uploaded successfully`);
+      toast.success(`${files.length} archivo(s) cargado(s) correctamente`);
       setFiles([]);
       if (onUploadComplete) {
         onUploadComplete(data.data);
       }
     } catch (error) {
       console.error('Upload failed:', error);
-      toast.error(error.response?.data?.message || 'Failed to upload files');
+      toast.error(error.response?.data?.message || 'No se pudieron cargar los archivos');
     } finally {
       setUploading(false);
     }
@@ -151,23 +151,23 @@ const FileUpload = ({ ticketId, replyId, onUploadComplete }) => {
         />
         <Upload size={48} className="mx-auto mb-4 text-muted-foreground" />
         <p className="text-lg font-medium text-foreground mb-2">
-          Drop files here or click to browse
+          Suelta archivos aqui o haz clic para buscarlos
         </p>
         <p className="text-sm text-muted-foreground mb-4">
-          Maximum {MAX_FILES} files, up to 10MB each
+          Maximo {MAX_FILES} archivos, hasta 10MB cada uno
         </p>
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90"
         >
-          Select Files
+          Seleccionar archivos
         </button>
       </div>
       {files.length > 0 && (
         <div className="space-y-2">
           <p className="text-sm font-medium text-foreground">
-            Selected Files ({files.length}/{MAX_FILES})
+            Archivos seleccionados ({files.length}/{MAX_FILES})
           </p>
           {files.map((file, index) => (
             <div
@@ -203,12 +203,12 @@ const FileUpload = ({ ticketId, replyId, onUploadComplete }) => {
             {uploading ? (
               <>
                 <Loader size={16} className="animate-spin" />
-                Uploading...
+                Cargando...
               </>
             ) : (
               <>
                 <Upload size={16} />
-                Upload {files.length} File{files.length > 1 ? 's' : ''}
+                Subir {files.length} archivo{files.length > 1 ? 's' : ''}
               </>
             )}
           </button>

@@ -21,9 +21,9 @@ const AttachmentList = ({ attachments, onDelete, canDelete = false }) => {
   };
 
   const formatFileSize = (bytes) => {
-    if (bytes === 0) return '0 Bytes';
+    if (bytes === 0) return '0 bytes';
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB'];
+    const sizes = ['bytes', 'KB', 'MB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
   };
@@ -43,10 +43,10 @@ const AttachmentList = ({ attachments, onDelete, canDelete = false }) => {
       link.remove();
       window.URL.revokeObjectURL(url);
 
-      toast.success('File downloaded');
+      toast.success('Archivo descargado');
     } catch (error) {
       console.error('Download failed:', error);
-      toast.error('Failed to download file');
+      toast.error('No se pudo descargar el archivo');
     }
   };
 
@@ -59,20 +59,20 @@ const AttachmentList = ({ attachments, onDelete, canDelete = false }) => {
   };
 
   const handleDelete = async (attachmentId) => {
-    if (!confirm('Are you sure you want to delete this file?')) {
+    if (!confirm('Estas seguro de que quieres eliminar este archivo?')) {
       return;
     }
 
     setDeleting(attachmentId);
     try {
       await api.delete(`/attachments/${attachmentId}`);
-      toast.success('File deleted');
+      toast.success('Archivo eliminado');
       if (onDelete) {
         onDelete(attachmentId);
       }
     } catch (error) {
       console.error('Delete failed:', error);
-      toast.error('Failed to delete file');
+      toast.error('No se pudo eliminar el archivo');
     } finally {
       setDeleting(null);
     }
@@ -81,7 +81,7 @@ const AttachmentList = ({ attachments, onDelete, canDelete = false }) => {
   if (!attachments || attachments.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        No attachments
+        No hay archivos adjuntos
       </div>
     );
   }
@@ -115,7 +115,7 @@ const AttachmentList = ({ attachments, onDelete, canDelete = false }) => {
                 <button
                   onClick={() => handleView(attachment)}
                   className="p-2 hover:bg-accent rounded"
-                  title="Preview"
+                  title="Previsualizar"
                 >
                   <Eye size={16} />
                 </button>
@@ -123,7 +123,7 @@ const AttachmentList = ({ attachments, onDelete, canDelete = false }) => {
               <button
                 onClick={() => handleDownload(attachment)}
                 className="p-2 hover:bg-accent rounded"
-                title="Download"
+                title="Descargar"
               >
                 <Download size={16} />
               </button>
@@ -132,7 +132,7 @@ const AttachmentList = ({ attachments, onDelete, canDelete = false }) => {
                   onClick={() => handleDelete(attachment._id)}
                   disabled={deleting === attachment._id}
                   className="p-2 hover:bg-destructive/20 rounded disabled:opacity-50"
-                  title="Delete"
+                  title="Eliminar"
                 >
                   <Trash2 size={16} className="text-destructive" />
                 </button>
