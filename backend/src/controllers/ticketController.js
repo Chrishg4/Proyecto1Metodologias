@@ -10,11 +10,16 @@ export const createTicket = async (req, res, next) => {
   try {
     const { title, description, priority, department, tags } = req.body;
 
-    const defaultStatus = await Status.findOne({ title: 'Open' });
-    if (!defaultStatus) {
+    const defaultStatus = await Status.findOne({
+      title: { $in: ['Open', 'Abierto'] },
+    }).sort({ order: 1, createdAt: 1 });
+
+    const fallbackStatus = defaultStatus || await Status.findOne({ isSystem: true }).sort({ order: 1, createdAt: 1 });
+
+    if (!fallbackStatus) {
       return res.status(400).json({
         success: false,
-        message: 'Default status not found. Please run the seed script first: node backend/src/scripts/seed.js'
+        message: 'No default status found. Please create or seed at least one system status.'
       });
     }
 
@@ -26,7 +31,7 @@ export const createTicket = async (req, res, next) => {
       description,
       priority,
       department,
-      status: defaultStatus._id,
+      status: fallbackStatus._id,
       createdBy: req.user._id,
       tags: tags || [],
     });
@@ -43,12 +48,14 @@ export const createTicket = async (req, res, next) => {
       .populate('status')
       .populate('department')
       .populate('createdBy', 'name email')
-      .populate('assignedTo', 'name email');
+      .populate('assignedTo', 'name email');
+
     try {
       notifyRole('admin', 'ticket:created', populatedTicket);
       notifyRole('agent', 'ticket:created', populatedTicket);
     } catch (notifyError) {
-      console.error('Notification error:', notifyError);
+      console.error('Notification error:', notifyError);
+
     }
 
     res.status(201).json({
@@ -87,7 +94,8 @@ export const getTickets = async (req, res, next) => {
         { ticketNumber: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
       ];
-    }
+    }
+
     if (req.user.role === 'user') {
       query.createdBy = req.user._id;
     }
@@ -135,7 +143,8 @@ export const getTicket = async (req, res, next) => {
 
     if (!ticket) {
       return res.status(404).json({ message: 'Ticket not found' });
-    }
+    }
+
     if (req.user.role === 'user' && ticket.createdBy._id.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized to view this ticket' });
     }
@@ -159,7 +168,8 @@ export const updateTicket = async (req, res, next) => {
 
     if (!ticket) {
       return res.status(404).json({ message: 'Ticket not found' });
-    }
+    }
+
     if (req.user.role === 'user' && ticket.createdBy.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized to update this ticket' });
     }
@@ -196,7 +206,8 @@ export const updateTicket = async (req, res, next) => {
       .populate('status')
       .populate('department')
       .populate('createdBy', 'name email')
-      .populate('assignedTo', 'name email');
+      .populate('assignedTo', 'name email');
+
     if (updatedTicket.createdBy._id.toString() !== req.user._id.toString()) {
       notifyUser(updatedTicket.createdBy._id.toString(), 'ticket:updated', updatedTicket);
     }
@@ -239,10 +250,12 @@ export const assignTicket = async (req, res, next) => {
       .populate('status')
       .populate('department')
       .populate('createdBy', 'name email')
-      .populate('assignedTo', 'name email');
+      .populate('assignedTo', 'name email');
+
     if (assignedTo) {
       notifyUser(assignedTo, 'ticket:assigned', updatedTicket);
-    }
+    }
+
     notifyUser(updatedTicket.createdBy._id.toString(), 'ticket:assigned', updatedTicket);
 
     res.status(200).json({
@@ -290,7 +303,8 @@ export const changeStatus = async (req, res, next) => {
       .populate('status')
       .populate('department')
       .populate('createdBy', 'name email')
-      .populate('assignedTo', 'name email');
+      .populate('assignedTo', 'name email');
+
     notifyUser(updatedTicket.createdBy._id.toString(), 'ticket:status_changed', updatedTicket);
     if (updatedTicket.assignedTo) {
       notifyUser(updatedTicket.assignedTo._id.toString(), 'ticket:status_changed', updatedTicket);
@@ -312,7 +326,8 @@ export const addReply = async (req, res, next) => {
 
     if (!ticket) {
       return res.status(404).json({ message: 'Ticket not found' });
-    }
+    }
+
     if (req.user.role === 'user' && ticket.createdBy.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized to reply to this ticket' });
     }
@@ -340,7 +355,8 @@ export const addReply = async (req, res, next) => {
 
     const populatedTicket = await Ticket.findById(ticket._id)
       .populate('createdBy', '_id')
-      .populate('assignedTo', '_id');
+      .populate('assignedTo', '_id');
+
     if (populatedTicket.createdBy._id.toString() !== req.user._id.toString()) {
       notifyUser(populatedTicket.createdBy._id.toString(), 'ticket:reply', {
         ticket: ticket._id,
@@ -379,7 +395,8 @@ export const mergeTickets = async (req, res, next) => {
 
     sourceTicket.isMerged = true;
     sourceTicket.mergedInto = targetTicket._id;
-    await sourceTicket.save();
+    await sourceTicket.save();
+
     await Reply.updateMany(
       { ticket: sourceTicket._id },
       { ticket: targetTicket._id }
