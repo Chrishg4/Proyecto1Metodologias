@@ -1,87 +1,82 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import User from '../models/User.js';
+import Usuario from '../models/User.js';
 import Department from '../models/Department.js';
 import Status from '../models/Status.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-dotenv.config({ path: join(__dirname, '../../.env') });
+dotenv.config();
 
 const seedDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB');
-    await User.deleteMany({});
+    console.log('Connected to MongoDB');
+
+    await Usuario.deleteMany({});
     await Department.deleteMany({});
     await Status.deleteMany({});
+    console.log('Cleared existing data');
 
-    console.log('Cleared existing data');
-    const admin = await User.create({
-      name: 'Admin User',
+    const admin = await Usuario.create({
+      nombre: 'Admin User',
       email: 'admin@example.com',
-      password: 'admin123',
-      role: 'admin',
-      authProvider: 'local',
+      contrasena: 'admin123', // se hashea automáticamente
+      rol: 'admin',
+      proveedorAutenticacion: 'local',
     });
 
-    console.log('Created admin user');
-    const agent = await User.create({
-      name: 'Support Agent',
+    const agent = await Usuario.create({
+      nombre: 'Support Agent',
       email: 'agent@example.com',
-      password: 'agent123',
-      role: 'agent',
-      authProvider: 'local',
+      contrasena: 'agent123',
+      rol: 'agent',
+      proveedorAutenticacion: 'local',
     });
 
-    console.log('Created agent user');
-    const user = await User.create({
-      name: 'Test User',
+    const user = await Usuario.create({
+      nombre: 'Test User',
       email: 'user@example.com',
-      password: 'user123',
-      role: 'user',
-      authProvider: 'local',
+      contrasena: 'user123',
+      rol: 'user',
+      proveedorAutenticacion: 'local',
     });
 
-    console.log('Created regular user');
+    console.log('Created users');
+
     const departments = await Department.insertMany([
       {
-        name: 'Technical Support',
-        description: 'Technical issues and troubleshooting',
+        name: 'Soporte Técnico',
+        description: 'Problemas técnicos y troubleshooting',
         email: 'tech@example.com',
         assignedAdmins: [admin._id, agent._id],
         isHidden: false,
       },
       {
-        name: 'Billing',
-        description: 'Billing and payment inquiries',
+        name: 'Facturación',
+        description: 'Consultas de pagos y facturación',
         email: 'billing@example.com',
         assignedAdmins: [admin._id],
         isHidden: false,
       },
       {
-        name: 'Sales',
-        description: 'Sales and product inquiries',
+        name: 'Ventas',
+        description: 'Consultas de productos y ventas',
         email: 'sales@example.com',
         assignedAdmins: [admin._id],
         isHidden: false,
       },
       {
-        name: 'Internal',
-        description: 'Internal department for escalations',
+        name: 'Interno',
+        description: 'Departamento interno para escalaciones',
         email: 'internal@example.com',
         assignedAdmins: [admin._id],
         isHidden: true,
       },
     ]);
+    console.log('Created departments');
 
-    console.log('Created departments');
     const statuses = await Status.insertMany([
       {
-        title: 'Open',
+        title: 'Abierto',
         color: '#3B82F6',
         includeInActive: true,
         autoClose: false,
@@ -89,7 +84,7 @@ const seedDatabase = async () => {
         isSystem: true,
       },
       {
-        title: 'In Progress',
+        title: 'En Progreso',
         color: '#F59E0B',
         includeInActive: true,
         autoClose: false,
@@ -97,7 +92,7 @@ const seedDatabase = async () => {
         isSystem: false,
       },
       {
-        title: 'Waiting for Customer',
+        title: 'Esperando al Cliente',
         color: '#8B5CF6',
         includeInActive: true,
         autoClose: true,
@@ -106,7 +101,7 @@ const seedDatabase = async () => {
         isSystem: false,
       },
       {
-        title: 'Escalated',
+        title: 'Escalado',
         color: '#EF4444',
         includeInActive: true,
         autoClose: false,
@@ -114,7 +109,7 @@ const seedDatabase = async () => {
         isSystem: false,
       },
       {
-        title: 'Resolved',
+        title: 'Resuelto',
         color: '#10B981',
         includeInActive: true,
         autoClose: true,
@@ -123,7 +118,7 @@ const seedDatabase = async () => {
         isSystem: false,
       },
       {
-        title: 'Closed',
+        title: 'Cerrado',
         color: '#6B7280',
         includeInActive: false,
         autoClose: false,
@@ -131,22 +126,20 @@ const seedDatabase = async () => {
         isSystem: true,
       },
     ]);
-
     console.log('Created statuses');
 
     console.log('\n=== Seed Data Summary ===');
-    console.log('\nUsers:');
+    console.log('\nUsuarios:');
     console.log(`Admin: admin@example.com / admin123`);
     console.log(`Agent: agent@example.com / agent123`);
     console.log(`User: user@example.com / user123`);
     console.log(`\nDepartments: ${departments.length}`);
     console.log(`Statuses: ${statuses.length}`);
     console.log('\n=========================\n');
-
-    process.exit(0);
-  } catch (error) {
-    console.error('Seed error:', error);
-    process.exit(1);
+  } catch (err) {
+    console.error('Seed error:', err);
+  } finally {
+    await mongoose.connection.close();
   }
 };
 
