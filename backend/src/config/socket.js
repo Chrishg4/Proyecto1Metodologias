@@ -4,7 +4,7 @@ import User from '../models/User.js';
 
 let io = null;
 
-const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || 'http://localhost:5173')
+const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || 'http://localhost:5173,https://proyecto1metodologias-1.onrender.com')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
