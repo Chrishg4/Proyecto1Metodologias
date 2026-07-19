@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Star, TrendingUp, TrendingDown, Minus, Eye, Trash2, Filter, Calendar } from 'lucide-react';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../hooks/useAuth';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 

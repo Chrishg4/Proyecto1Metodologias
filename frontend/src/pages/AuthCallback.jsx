@@ -1,7 +1,19 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+
+const normalizeUser = (user) => {
+  if (!user) return null;
+
+  return {
+    ...user,
+    id: user.id || user._id,
+    name: user.name || user.nombre,
+    role: user.role || user.rol,
+    authProvider: user.authProvider || user.proveedorAutenticacion,
+  };
+};
 
 const AuthCallback = () => {
   const [searchParams] = useSearchParams();
@@ -38,8 +50,9 @@ const AuthCallback = () => {
 
           if (response.ok) {
             const data = await response.json();
-            localStorage.setItem('user', JSON.stringify(data.data));
-            setUser(data.data);
+            const normalizedUser = normalizeUser(data.data);
+            localStorage.setItem('user', JSON.stringify(normalizedUser));
+            setUser(normalizedUser);
             toast.success('Successfully signed in with Google!');
             navigate('/');
           } else {

@@ -24,9 +24,10 @@ export const createDepartment = async (req, res, next) => {
 export const getDepartments = async (req, res, next) => {
   try {
     const { includeHidden } = req.query;
+    const currentRole = req.user.role || req.user.rol;
 
     const query = { isActive: true };
-    if (!includeHidden && req.user.role !== 'admin') {
+    if (!includeHidden && currentRole !== 'admin') {
       query.isHidden = false;
     }
 

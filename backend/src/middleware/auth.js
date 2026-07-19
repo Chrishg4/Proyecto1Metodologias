@@ -16,7 +16,15 @@ export const protect = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id).select('-contrasena');
+    const user = await User.findById(decoded.id).select('-contrasena');
+
+    if (user) {
+      req.user = user.toObject ? user.toObject() : { ...user };
+      req.user.id = req.user.id || req.user._id?.toString();
+      req.user.name = req.user.name || req.user.nombre;
+      req.user.role = req.user.role || req.user.rol;
+      req.user.authProvider = req.user.authProvider || req.user.proveedorAutenticacion;
+    }
 
     if (!req.user || !req.user.activo) {
       return res.status(401).json({ message: 'User not found or inactive' });

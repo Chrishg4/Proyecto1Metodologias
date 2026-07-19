@@ -64,9 +64,16 @@ export const logout = async (req, res) => {
 
 export const getMe = async (req, res) => {
   const user = await User.findById(req.user.id).populate('departments');
+
+  const userData = user.toObject ? user.toObject() : { ...user };
+  userData.id = userData.id || userData._id?.toString();
+  userData.name = userData.name || userData.nombre;
+  userData.role = userData.role || userData.rol;
+  userData.authProvider = userData.authProvider || userData.proveedorAutenticacion;
+
   res.status(200).json({
     success: true,
-    data: user,
+    data: userData,
   });
 };
 
@@ -76,9 +83,18 @@ export const getUsers = async (req, res, next) => {
       .select('nombre email rol')
       .sort({ nombre: 1 });
 
+    const normalizedUsers = users.map((user) => {
+      const userData = user.toObject ? user.toObject() : { ...user };
+      userData.id = userData.id || userData._id?.toString();
+      userData.name = userData.name || userData.nombre;
+      userData.role = userData.role || userData.rol;
+      userData.authProvider = userData.authProvider || userData.proveedorAutenticacion || 'local';
+      return userData;
+    });
+
     res.status(200).json({
       success: true,
-      data: users,
+      data: normalizedUsers,
     });
   } catch (error) {
     next(error);

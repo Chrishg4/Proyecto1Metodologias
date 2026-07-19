@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import useAuth from '../hooks/useAuth';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 import { Users as UsersIcon, Shield, User, Mail } from 'lucide-react';

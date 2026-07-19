@@ -8,6 +8,12 @@ export const generateToken = (id) => {
 
 export const sendTokenResponse = (user, statusCode, res) => {
   const token = generateToken(user._id);
+  const userData = user.toObject ? user.toObject() : { ...user };
+
+  userData.id = userData.id || userData._id?.toString();
+  userData.name = userData.name || userData.nombre;
+  userData.role = userData.role || userData.rol;
+  userData.authProvider = userData.authProvider || userData.proveedorAutenticacion;
 
   const options = {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
@@ -19,6 +25,6 @@ export const sendTokenResponse = (user, statusCode, res) => {
   res.status(statusCode).cookie('token', token, options).json({
     success: true,
     token,
-    user,
+    user: userData,
   });
 };
