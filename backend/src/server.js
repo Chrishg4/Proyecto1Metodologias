@@ -55,6 +55,11 @@ app.use('/api/ticket-templates', ticketTemplateRoutes);
 app.use('/api/surveys', surveyRoutes);
 app.use('/api/ticket-locks', ticketLockRoutes);
 
+app.get("/", (req, res) => {
+  res.send("API funcionando correctamente");
+});
+
+
 app.use(notFound);
 app.use(errorHandler);
 
