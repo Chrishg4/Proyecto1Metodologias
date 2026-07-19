@@ -11,10 +11,10 @@ export const register = async (req, res, next) => {
     }
 
     const user = await User.create({
-      name,
+      nombre: name,
       email,
-      password,
-      authProvider: 'local',
+      contrasena: password,
+      proveedorAutenticacion: 'local',
     });
 
     sendTokenResponse(user, 201, res);
@@ -31,17 +31,17 @@ export const login = async (req, res, next) => {
       return res.status(400).json({ message: 'Please provide email and password' });
     }
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select('+contrasena');
 
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user || !(await user.compararContrasena(password))) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    if (!user.isActive) {
+    if (!user.activo) {
       return res.status(401).json({ message: 'Account is inactive' });
     }
 
-    user.lastLogin = new Date();
+    user.ultimoInicioSesion = new Date();
     await user.save();
 
     sendTokenResponse(user, 200, res);
@@ -72,9 +72,9 @@ export const getMe = async (req, res) => {
 
 export const getUsers = async (req, res, next) => {
   try {
-    const users = await User.find({ isActive: true })
-      .select('name email role')
-      .sort({ name: 1 });
+    const users = await User.find({ activo: true })
+      .select('nombre email rol')
+      .sort({ nombre: 1 });
 
     res.status(200).json({
       success: true,

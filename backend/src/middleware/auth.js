@@ -16,9 +16,9 @@ export const protect = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.id).select('-password');
+    req.user = await User.findById(decoded.id).select('-contrasena');
 
-    if (!req.user || !req.user.isActive) {
+    if (!req.user || !req.user.activo) {
       return res.status(401).json({ message: 'User not found or inactive' });
     }
 
@@ -31,9 +31,9 @@ export const protect = async (req, res, next) => {
 
 export const authorize = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    if (!roles.includes(req.user.rol)) {
       return res.status(403).json({
-        message: `User role '${req.user.role}' is not authorized to access this route`,
+        message: `User role '${req.user.rol}' is not authorized to access this route`,
       });
     }
     next();
@@ -52,7 +52,7 @@ export const optionalAuth = async (req, res, next) => {
 
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id).select('-password');
+      req.user = await User.findById(decoded.id).select('-contrasena');
     }
 
     next();
