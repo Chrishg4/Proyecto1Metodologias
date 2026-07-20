@@ -591,20 +591,26 @@ const TicketDetail = () => {
           {}
           <div className="bg-card p-4 rounded-lg shadow-sm border border-border">
             <h3 className="text-sm font-semibold text-foreground mb-3">Estado</h3>
-            <select
-              value={ticket.status._id}
-              onChange={(e) => handleStatusChange(e.target.value)}
-              disabled={isLocked && user?.role !== 'user'}
-              className={`w-full px-3 py-2 border-2 border-border rounded-md bg-background text-foreground ${
-                isLocked && user?.role !== 'user' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-              }`}
-            >
-              {statuses.map((status) => (
-                <option key={status._id} value={status._id}>
-                  {status.title}
-                </option>
-              ))}
-            </select>
+            {user?.role === 'user' ? (
+              <div className="w-full px-3 py-2 border-2 border-border rounded-md bg-background text-foreground">
+                {ticket.status?.title || ticket.status?.name || 'Sin estado'}
+              </div>
+            ) : (
+              <select
+                value={ticket.status?._id || ''}
+                onChange={(e) => handleStatusChange(e.target.value)}
+                disabled={isLocked && user?.role !== 'user'}
+                className={`w-full px-3 py-2 border-2 border-border rounded-md bg-background text-foreground ${
+                  isLocked && user?.role !== 'user' ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+                }`}
+              >
+                {statuses.map((status) => (
+                  <option key={status._id} value={status._id}>
+                    {status.title}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           {(ticket.status?.name?.toLowerCase().includes('closed') || 
