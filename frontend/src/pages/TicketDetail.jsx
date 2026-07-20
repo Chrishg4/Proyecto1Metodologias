@@ -7,7 +7,6 @@ import toast from 'react-hot-toast';
 import { ArrowLeft, Send, Clock, User, Tag, History, GitMerge, Link2, Paperclip, Star, AlertTriangle, Eye } from 'lucide-react';
 import FileUpload from '../components/FileUpload';
 import AttachmentList from '../components/AttachmentList';
-import SavedReplyPicker from '../components/SavedReplyPicker';
 import { useTicketLock } from '../hooks/useTicketLock';
 
 const TicketDetail = () => {
@@ -556,10 +555,6 @@ const TicketDetail = () => {
                 placeholder={isLocked && user?.role !== 'user' ? 'La solicitud esta siendo editada por otro agente...' : 'Escribe tu respuesta...'}
               />
               <div className="flex items-center justify-between gap-3">
-                <SavedReplyPicker
-                  onSelect={(content) => setReplyMessage(content)}
-                  ticketData={ticket}
-                />
                 <div className="flex items-center gap-3 flex-1 justify-end">
                   {user?.role !== 'user' && (
                     <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">

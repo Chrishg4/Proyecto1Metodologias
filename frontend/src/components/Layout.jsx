@@ -6,11 +6,9 @@ import {
   FolderOpen,
   Settings,
   LogOut,
-  TrendingUp,
   Users,
   BarChart3,
   Grid3x3,
-  MessageSquare,
   FileText,
   Star
 } from 'lucide-react';
@@ -76,14 +74,6 @@ const Layout = () => {
           {(user?.role === 'admin' || user?.role === 'agent') && (
             <>
               <Link
-                to="/saved-replies"
-                className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
-              >
-                <MessageSquare size={20} />
-                <span>Respuestas guardadas</span>
-              </Link>
-
-              <Link
                 to="/ticket-templates"
                 className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
               >
@@ -120,16 +110,6 @@ const Layout = () => {
             >
               <Users size={20} />
               <span>Usuarios</span>
-            </Link>
-          )}
-
-          {user?.role === 'admin' && (
-            <Link
-              to="/escalations"
-              className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
-            >
-              <TrendingUp size={20} />
-              <span>Reglas de escalamiento</span>
             </Link>
           )}
         </nav>
