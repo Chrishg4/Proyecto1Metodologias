@@ -10,7 +10,6 @@ import {
   BarChart3,
   Grid3x3,
   FileText,
-  Star
 } from 'lucide-react';
 
 const Layout = () => {
@@ -61,14 +60,6 @@ const Layout = () => {
           >
             <Grid3x3 size={20} />
             <span>Panel personalizado</span>
-          </Link>
-
-          <Link
-            to="/surveys"
-            className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
-          >
-            <Star size={20} />
-            <span>Encuestas</span>
           </Link>
 
           {(user?.role === 'admin' || user?.role === 'agent') && (

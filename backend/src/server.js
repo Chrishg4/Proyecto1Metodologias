@@ -16,7 +16,6 @@ import statusRoutes from './routes/statusRoutes.js';
 import analyticsRoutes from './routes/analyticsRoutes.js';
 import attachmentRoutes from './routes/attachmentRoutes.js';
 import ticketTemplateRoutes from './routes/ticketTemplateRoutes.js';
-import surveyRoutes from './routes/surveyRoutes.js';
 import ticketLockRoutes from './routes/ticketLockRoutes.js';
 
 dotenv.config();
@@ -58,7 +57,6 @@ app.use('/api/statuses', statusRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/attachments', attachmentRoutes);
 app.use('/api/ticket-templates', ticketTemplateRoutes);
-app.use('/api/surveys', surveyRoutes);
 app.use('/api/ticket-locks', ticketLockRoutes);
 
 app.get("/", (req, res) => {

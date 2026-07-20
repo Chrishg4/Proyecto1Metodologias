@@ -17,8 +17,6 @@ import Analytics from './pages/Analytics';
 import AdvancedAnalytics from './pages/AdvancedAnalytics';
 import CustomDashboard from './pages/CustomDashboard';
 import TicketTemplates from './pages/TicketTemplates';
-import Surveys from './pages/Surveys';
-import SurveySubmit from './pages/SurveySubmit';
 
 function App() {
   return (
@@ -34,7 +32,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/survey/:token" element={<SurveySubmit />} />
 
           <Route
             path="/"
@@ -55,7 +52,6 @@ function App() {
             <Route path="analytics/advanced" element={<AdvancedAnalytics />} />
             <Route path="dashboard/custom" element={<CustomDashboard />} />
             <Route path="ticket-templates" element={<TicketTemplates />} />
-            <Route path="surveys" element={<Surveys />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

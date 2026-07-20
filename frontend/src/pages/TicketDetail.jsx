@@ -4,7 +4,7 @@ import useAuth from '../hooks/useAuth';
 import { ticketService } from '../services/ticketService';
 import api from '../services/api';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Send, Clock, User, Tag, History, GitMerge, Link2, Paperclip, Star, AlertTriangle, Eye } from 'lucide-react';
+import { ArrowLeft, Send, Clock, User, Tag, History, GitMerge, Link2, Paperclip, AlertTriangle, Eye } from 'lucide-react';
 import FileUpload from '../components/FileUpload';
 import AttachmentList from '../components/AttachmentList';
 import { useTicketLock } from '../hooks/useTicketLock';
@@ -32,7 +32,6 @@ const TicketDetail = () => {
   const [allTickets, setAllTickets] = useState([]);
   const [attachments, setAttachments] = useState([]);
   const [showFileUpload, setShowFileUpload] = useState(false);
-  const [surveyLink, setSurveyLink] = useState('');
   
   const { isLocked, lockedBy, isAcquiring, acquireLock, releaseLock } = useTicketLock(id);
 
@@ -40,7 +39,6 @@ const TicketDetail = () => {
     fetchTicket();
     fetchStatuses();
     fetchAttachments();
-    checkExistingSurvey();
     if (user?.role !== 'user') {
       fetchUsers();
     }
@@ -218,43 +216,6 @@ const TicketDetail = () => {
       toast.success('Solicitud asignada correctamente');
     } catch (error) {
       toast.error('Failed to assign ticket');
-    }
-  };
-
-  const checkExistingSurvey = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await api.get(`/surveys?ticket=${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      if (response.data && response.data.length > 0) {
-        const survey = response.data[0];
-        const link = `${window.location.origin}/survey/${survey.token}`;
-        setSurveyLink(link);
-      }
-    } catch (error) {
-    }
-  };
-
-  const handleCreateSurvey = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await api.post('/surveys', 
-        { ticketId: id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
-      const surveyToken = response.data.token;
-      const link = `${window.location.origin}/survey/${surveyToken}`;
-      setSurveyLink(link);
-      toast.success('Encuesta creada correctamente');
-    } catch (error) {
-      if (error.response?.status === 400 && error.response?.data?.message?.includes('already exists')) {
-        toast.error('Ya existe una encuesta para esta solicitud');
-      } else {
-        toast.error(error.response?.data?.message || 'No se pudo crear la encuesta');
-      }
     }
   };
 
@@ -607,66 +568,6 @@ const TicketDetail = () => {
               </select>
             )}
           </div>
-
-          {(ticket.status?.name?.toLowerCase().includes('closed') || 
-            ticket.status?.name?.toLowerCase().includes('resolved') || 
-            ticket.status?.title?.toLowerCase().includes('closed') || 
-            ticket.status?.title?.toLowerCase().includes('resolved')) && (
-            <div className="bg-card p-4 rounded-lg shadow-sm border border-border">
-              <h3 className="text-sm font-semibold text-foreground mb-3">Opiniones del cliente</h3>
-              
-              {user?.role !== 'user' && !surveyLink && (
-                <button
-                  onClick={handleCreateSurvey}
-                  className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Star size={16} />
-                  Enviar encuesta
-                </button>
-              )}
-
-              {surveyLink && (
-                <div className="mt-3 p-3 bg-green-50 rounded-md">
-                  <p className="text-xs text-green-800 mb-2">
-                    {user?.role === 'user' ? 'Por favor comparte tu opinion:' : 'Encuesta creada. Comparte este enlace:'}
-                  </p>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={surveyLink}
-                      readOnly
-                      className="flex-1 px-2 py-1 text-xs border border-green-300 rounded bg-white"
-                    />
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(surveyLink);
-                        toast.success('Enlace copiado');
-                      }}
-                      className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700"
-                    >
-                      Copiar
-                    </button>
-                  </div>
-                  {user?.role === 'user' && (
-                    <a
-                      href={surveyLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-2 block w-full px-4 py-2 bg-blue-600 text-white text-center rounded-md hover:bg-blue-700 transition-colors"
-                    >
-                      Responder encuesta
-                    </a>
-                  )}
-                </div>
-              )}
-
-              {!surveyLink && user?.role === 'user' && (
-                <p className="text-sm text-gray-600">
-                  Se te enviara una encuesta de satisfaccion pronto.
-                </p>
-              )}
-            </div>
-          )}
 
           {}
           {user?.role !== 'user' && (
