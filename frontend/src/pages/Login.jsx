@@ -76,7 +76,7 @@ const Login = () => {
         </div>
 
           <div className="relative z-10 text-primary-foreground/60 text-sm">
-          © 2025 Mesa de Ayuda. Todos los derechos reservados.
+           Metodologías Agiles de Desarrollo de Software
         </div>
       </div>
 
