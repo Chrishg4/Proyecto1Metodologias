@@ -256,36 +256,3 @@
   }
 }
 
-/*
- Custom Dashboard Drag and Drop Styles */
-.dragging {
-  opacity: 0.4;
-  transform: scale(0.95);
-}
-
-.drag-over {
-  border-color: hsl(var(--primary)) !important;
-  transform: scale(1.02);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-[draggable="true"] {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-[draggable="true"]:active {
-  cursor: grabbing !important;
-}
-
-/* Smooth transitions for drag and drop */
-.widget-container {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.widget-container:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}

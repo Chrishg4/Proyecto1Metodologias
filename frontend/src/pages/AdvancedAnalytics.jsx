@@ -21,12 +21,8 @@ import {
 import {
   TrendingUp,
   TrendingDown,
-  Download,
   Calendar,
-  RefreshCw,
   Sparkles,
-  FileText,
-  FileSpreadsheet,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -43,25 +39,12 @@ const AdvancedAnalytics = () => {
   });
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const [departments, setDepartments] = useState([]);
-  const [autoRefresh, setAutoRefresh] = useState(false);
-  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     fetchAnalytics();
     fetchDepartments();
     fetchPredictions();
   }, [dateRange, selectedDepartment]);
-
-  useEffect(() => {
-    let interval;
-    if (autoRefresh) {
-      interval = setInterval(() => {
-        fetchAnalytics();
-        fetchPredictions();
-      }, 30000); // Refresh every 30 seconds
-    }
-    return () => clearInterval(interval);
-  }, [autoRefresh, dateRange, selectedDepartment]);
 
   const fetchAnalytics = async () => {
     try {
@@ -96,48 +79,6 @@ const AdvancedAnalytics = () => {
       setPredictions(data.data);
     } catch (error) {
       console.error('Failed to fetch predictions:', error);
-    }
-  };
-
-  const handleExport = async (format) => {
-    try {
-      setExporting(true);
-      const params = new URLSearchParams();
-      params.append('format', format);
-      if (selectedDepartment) params.append('department', selectedDepartment);
-      if (dateRange.startDate) params.append('startDate', dateRange.startDate);
-      if (dateRange.endDate) params.append('endDate', dateRange.endDate);
-
-      const response = await api.get(`/analytics/export?${params}`, {
-        responseType: format === 'csv' ? 'blob' : 'json',
-      });
-
-      if (format === 'csv') {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `analytics-${Date.now()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      } else {
-        const dataStr = JSON.stringify(response.data, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = window.URL.createObjectURL(dataBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `analytics-${Date.now()}.json`);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      }
-
-      toast.success(`Exportado correctamente como ${format.toUpperCase()}`);
-    } catch (error) {
-      console.error('Export failed:', error);
-      toast.error('Failed to export data');
-    } finally {
-      setExporting(false);
     }
   };
 
@@ -214,48 +155,6 @@ const AdvancedAnalytics = () => {
               </option>
             ))}
           </select>
-
-          {}
-          <button
-            onClick={() => setAutoRefresh(!autoRefresh)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all ${
-              autoRefresh
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-foreground hover:bg-muted/80'
-            }`}
-          >
-            <RefreshCw size={16} className={autoRefresh ? 'animate-spin' : ''} />
-            Actualizacion automatica
-          </button>
-
-          {}
-          <div className="relative group">
-            <button
-              disabled={exporting}
-              className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:opacity-90 disabled:opacity-50 transition-all"
-            >
-              <Download size={16} />
-              Exportar
-            </button>
-            <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
-              <button
-                onClick={() => handleExport('csv')}
-                disabled={exporting}
-                className="w-full flex items-center gap-2 px-4 py-3 hover:bg-accent text-left transition-colors"
-              >
-                <FileSpreadsheet size={16} />
-                Exportar como CSV
-              </button>
-              <button
-                onClick={() => handleExport('json')}
-                disabled={exporting}
-                className="w-full flex items-center gap-2 px-4 py-3 hover:bg-accent text-left transition-colors"
-              >
-                <FileText size={16} />
-                Exportar como JSON
-              </button>
-            </div>
-          </div>
         </div>
       </div>
 

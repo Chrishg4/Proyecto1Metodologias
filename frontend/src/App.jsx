@@ -15,7 +15,6 @@ import Statuses from './pages/Statuses';
 import Users from './pages/Users';
 import Analytics from './pages/Analytics';
 import AdvancedAnalytics from './pages/AdvancedAnalytics';
-import CustomDashboard from './pages/CustomDashboard';
 import TicketTemplates from './pages/TicketTemplates';
 
 function App() {
@@ -50,7 +49,6 @@ function App() {
             <Route path="users" element={<Users />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="analytics/advanced" element={<AdvancedAnalytics />} />
-            <Route path="dashboard/custom" element={<CustomDashboard />} />
             <Route path="ticket-templates" element={<TicketTemplates />} />
           </Route>
 
