@@ -1,21 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ticketService } from '../services/ticketService';
 import api from '../services/api';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Paperclip, FileText } from 'lucide-react';
+import { ArrowLeft, Paperclip } from 'lucide-react';
 import FileUpload from '../components/FileUpload';
-import TicketTemplatePicker from '../components/TicketTemplatePicker';
 
 const CreateTicket = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [showFileUpload, setShowFileUpload] = useState(false);
   const [createdTicketId, setCreatedTicketId] = useState(null);
-  const [showTemplatePicker, setShowTemplatePicker] = useState(false);
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -26,11 +22,7 @@ const CreateTicket = () => {
 
   useEffect(() => {
     fetchDepartments();
-
-    if (location.state?.template) {
-      handleTemplateSelect(location.state.template);
-    }
-  }, [location]);
+  }, []);
 
   const fetchDepartments = async () => {
     try {
@@ -47,19 +39,6 @@ const CreateTicket = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const handleTemplateSelect = (template) => {
-    setSelectedTemplate(template);
-    setFormData({
-      title: template.title,
-      description: template.content,
-      priority: template.priority.charAt(0).toUpperCase() + template.priority.slice(1),
-      department: template.department?._id || '',
-      tags: template.tags?.join(', ') || '',
-    });
-    setShowTemplatePicker(false);
-    toast.success(`Plantilla "${template.name}" aplicada`);
   };
 
   const handleSubmit = async (e) => {
@@ -110,21 +89,8 @@ const CreateTicket = () => {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Crear nueva solicitud</h1>
-          {selectedTemplate && (
-            <p className="text-sm text-muted-foreground mt-1">
-              Usando plantilla: <span className="font-medium">{selectedTemplate.name}</span>
-            </p>
-          )}
         </div>
         <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={() => setShowTemplatePicker(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <FileText size={20} />
-            Usar plantilla
-          </button>
           <button
             onClick={() => navigate('/tickets')}
             className="flex items-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -284,13 +250,6 @@ const CreateTicket = () => {
         )}
       </div>
 
-      {}
-      {showTemplatePicker && (
-        <TicketTemplatePicker
-          onSelect={handleTemplateSelect}
-          onClose={() => setShowTemplatePicker(false)}
-        />
-      )}
     </div>
   );
 };

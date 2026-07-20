@@ -15,7 +15,6 @@ import Statuses from './pages/Statuses';
 import Users from './pages/Users';
 import Analytics from './pages/Analytics';
 import AdvancedAnalytics from './pages/AdvancedAnalytics';
-import TicketTemplates from './pages/TicketTemplates';
 
 function App() {
   return (
@@ -43,13 +42,13 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="tickets" element={<TicketList />} />
             <Route path="tickets/new" element={<CreateTicket />} />
+            <Route path="tickets/create" element={<Navigate to="/tickets/new" replace />} />
             <Route path="tickets/:id" element={<TicketDetail />} />
             <Route path="departments" element={<Departments />} />
             <Route path="statuses" element={<Statuses />} />
             <Route path="users" element={<Users />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="analytics/advanced" element={<AdvancedAnalytics />} />
-            <Route path="ticket-templates" element={<TicketTemplates />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

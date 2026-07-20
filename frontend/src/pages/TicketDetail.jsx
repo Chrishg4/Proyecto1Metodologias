@@ -38,7 +38,6 @@ const TicketDetail = () => {
   useEffect(() => {
     fetchTicket();
     fetchStatuses();
-    fetchAttachments();
     if (user?.role !== 'user') {
       fetchUsers();
     }
@@ -65,6 +64,7 @@ const TicketDetail = () => {
         description: response.data.ticket.description,
         priority: response.data.ticket.priority,
       });
+      await fetchAttachments();
     } catch (error) {
       console.error('Failed to fetch ticket:', error);
       toast.error('No se pudo cargar la solicitud');

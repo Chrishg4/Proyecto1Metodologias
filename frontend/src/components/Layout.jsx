@@ -8,7 +8,6 @@ import {
   LogOut,
   Users,
   BarChart3,
-  FileText,
 } from 'lucide-react';
 
 const Layout = () => {
@@ -52,18 +51,6 @@ const Layout = () => {
             <BarChart3 size={20} />
             <span>Analitica</span>
           </Link>
-
-          {(user?.role === 'admin' || user?.role === 'agent') && (
-            <>
-              <Link
-                to="/ticket-templates"
-                className="flex items-center gap-3 px-6 py-3 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-all"
-              >
-                <FileText size={20} />
-                <span>Plantillas de tickets</span>
-              </Link>
-            </>
-          )}
 
           {(user?.role === 'admin' || user?.role === 'agent') && (
             <>
